@@ -97,7 +97,7 @@ max_govuk_string_length = df_govuk_person['govuk_string'].str.len().max()
 
 # %%
 # Save data
-df_govuk_person.to_sql(
+df_govuk_person[['id', 'name', 'govuk_string']].to_sql(
     'ukgovt.govuk_strings_people_20240503',
     schema='source',
     con=connection,
