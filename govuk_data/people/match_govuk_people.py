@@ -58,13 +58,7 @@ df_ifg_minister = pd.read_sql_query(
         ) and
         not exists (
             select *
-            from analysis.[ukgovt.minister_ids_govuk_strings_20211009] g
-            where
-                p.id = g.id
-        ) and
-        not exists (
-            select *
-            from analysis.[ukgovt.minister_ids_govuk_strings_20220702] g
+            from reference.[ukgovt.minister_ids_govuk_strings] g
             where
                 p.id = g.id
         )
