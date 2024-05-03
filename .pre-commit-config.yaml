@@ -1,0 +1,29 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: check-ast
+    -   id: check-merge-conflict
+-   repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+    -   id: python-check-blanket-noqa
+    -   id: python-check-blanket-type-ignore
+-   repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+    -   id: flake8
+        args: [--max-line-length=100]
+-   repo: local
+    hooks:
+    -   id: python-check-blanket-file-noqa
+        name: python-check-blanket-file-noqa
+        entry: 'flake8: noqa'
+        language: pygrep
+        types: [python]
+    -   id: check-xxx
+        name: check-xxx
+        entry: (?i)XXX
+        language: pygrep
+        types: [text]
+        exclude: .pre-commit-config.yaml
