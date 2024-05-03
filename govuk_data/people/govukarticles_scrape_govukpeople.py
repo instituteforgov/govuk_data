@@ -83,7 +83,7 @@ assert all(df_govuk_person['href'].str.startswith('/government/people/'))
 # %%
 # EDIT DATA
 # Add our own ID column
-df_govuk_person['id'] = uuid.uuid4()
+df_govuk_person.insert(0, 'id', [uuid.uuid4() for _ in range(len(df_govuk_person))])
 
 # %%
 # Pull name string out of URL
