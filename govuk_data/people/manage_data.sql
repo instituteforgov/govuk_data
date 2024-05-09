@@ -45,6 +45,16 @@ from analysis.[ukgovt.minister_ids_govuk_strings_20240503]
 --- QA
 -- Duplicate names
 select
+    s.id
+from reference.[ukgovt.govuk_strings_people] s
+group by
+    s.id
+having
+    count(1) > 1
+
+
+-- Duplicate names
+select
     s.name
 from reference.[ukgovt.govuk_strings_people] s
 group by
@@ -52,22 +62,12 @@ group by
 having
     count(1) > 1
 
-select *
-from reference.[ukgovt.govuk_strings_people] s
-where
-    s.name in (
-        'Andrew Mitchell',
-        'John Randall',
-        'Lord Howell of Guildford'
-    )
-order by
-    s.name
 
-delete s
+-- Duplicate gov.uk strings
+select
+    s.govuk_string
 from reference.[ukgovt.govuk_strings_people] s
-where
-    s.govuk_string in (
-        'andrew-mitchell--2',
-        'john-randall--2'
-    )
-
+group by
+    s.govuk_string
+having
+    count(1) > 1
