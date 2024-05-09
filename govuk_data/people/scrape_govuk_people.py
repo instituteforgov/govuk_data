@@ -10,7 +10,7 @@
     Outputs
         - SQL: source.ukgovt.govuk_strings_people_20240503
     Parameters
-        None
+        - base_url: Base URL for scraping
     Notes
         None
 '''
