@@ -9,7 +9,7 @@
     Inputs
         - SQL: core.person
         - SQL: core.appointment
-        - SQL: reference.[ukgovt.minister_ids_govuk_strings]
+        - SQL: reference.[ukgovt.govuk_strings_people]
         - Excel: data/match_20240503.xlsx
     Outputs
         - Excel: data/match_20240503.xlsx
@@ -59,7 +59,7 @@ df_ifg_minister = pd.read_sql_query(
         ) and
         not exists (
             select *
-            from reference.[ukgovt.minister_ids_govuk_strings] g
+            from reference.[ukgovt.govuk_strings_people] g
             where
                 p.id = g.id
         )
