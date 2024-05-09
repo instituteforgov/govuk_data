@@ -9,10 +9,11 @@
     Inputs
         - SQL: core.person
         - SQL: core.appointment
-        - SQL: analysis.[ukgovt.minister_ids_govuk_strings_20211009]
-        - SQL: analysis.[ukgovt.minister_ids_govuk_strings_20220702]
+        - SQL: reference.[ukgovt.minister_ids_govuk_strings]
+        - Excel: data/match_20240503.xlsx
     Outputs
         - Excel: data/match_20240503.xlsx
+        - SQL: analysis.[ukgovt.minister_ids_govuk_strings_20240503]
     Parameters
         None
     Notes
