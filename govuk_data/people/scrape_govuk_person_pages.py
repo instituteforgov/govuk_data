@@ -10,6 +10,7 @@
         - API: https://www.gov.uk/api/content/government/people/<person_string>
     Outputs
         - pkl: data/df_person_page.pkl_20240503
+        - SQL: analysis.ukgovt.minister_govuk_people_page_content_20240503
     Parameters
         - base_url: Base URL for API request
         - headers: Headers for API request
@@ -29,9 +30,11 @@ import os
 import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from urllib3.util.retry import Retry
 
 from ds_utils import database_operations as dbo
+from ds_utils import dataframe_operations as dfo
 
 # %%
 # SET PARAMETERS
@@ -99,3 +102,23 @@ assert df_person_page.shape[0] == df_ifg_minister.shape[0], \
 # %%
 # SAVE TO PICKLE
 df_person_page.to_pickle('data/df_person_page.pkl_20240503')
+
+# %%
+# EDIT DATA
+# Further flatten json
+df_temp = dfo.flatten_nested_json_columns(
+    df_person_page
+)
+
+# %%
+# SAVE TO SQL
+df_temp.to_sql(
+    'ukgovt.minister_govuk_people_page_content_20240503',
+    schema='analysis',
+    con=connection,
+    dtype={
+        'ifg_person_id': UNIQUEIDENTIFIER,
+    },
+    index=False,
+    if_exists='replace',
+)
