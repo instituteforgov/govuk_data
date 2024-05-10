@@ -106,13 +106,13 @@ df_person_page.to_pickle('data/df_person_page.pkl_20240503')
 # %%
 # EDIT DATA
 # Further flatten json
-df_temp = dfo.flatten_nested_json_columns(
+df_person_page_flat = dfo.flatten_nested_json_columns(
     df_person_page
 )
 
 # %%
 # SAVE TO SQL
-df_temp.to_sql(
+df_person_page_flat.to_sql(
     'ukgovt.minister_govuk_people_page_content_20240503',
     schema='analysis',
     con=connection,
