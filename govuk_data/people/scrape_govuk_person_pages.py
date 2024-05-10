@@ -90,8 +90,8 @@ for index, row in df_ifg_minister.iterrows():
     row_list.append(row)
 
 # %%
-# FLATTEN JSON
-df_person_page = pd.json_normalize(row_list)
+# Create df
+df_person_page = pd.DataFrame(row_list)
 
 # %%
 # CARRY OUT CHECKS ON DATA
