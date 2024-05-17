@@ -32,6 +32,14 @@ def standardise_mos_puss_post_name(
     if 'Under-Secretary' in post_name:
         post_name = standardise_puss_punctuation(post_name)
 
+    # Set post rank
+    if 'Parliamentary Under Secretary of State' in post_name:
+        post_rank = 'PUSS'
+    elif 'Minister' in post_name:
+        post_rank = 'MoS'
+    else:
+        post_rank = None
+
     # Handle cases with brackets
     if '(' in post_name:
         post_name = post_name.split('(')[1].split(')')[0]
@@ -52,7 +60,7 @@ def standardise_mos_puss_post_name(
 
     post_name = post_name.strip()
 
-    return post_name
+    return post_name, post_rank
 
 
 def standardise_puss_punctuation(
