@@ -26,6 +26,7 @@
 '''
 
 import os
+from uuid import uuid4
 
 import pandas as pd
 import requests
@@ -108,6 +109,14 @@ df_person_page.to_pickle('data/df_person_page.pkl_20240503')
 # Further flatten json
 df_person_page_flat = dfo.flatten_nested_json_columns(
     df_person_page
+)
+
+# %%
+# Add unique row ID
+df_person_page_flat.insert(0, 'row_id', None)
+
+df_person_page_flat['row_id'] = df_person_page_flat['ifg_person_id'].apply(
+    lambda x: uuid4()
 )
 
 # %%
