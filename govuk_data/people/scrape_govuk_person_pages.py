@@ -111,6 +111,12 @@ df_person_page_flat = dfo.flatten_nested_json_columns(
 )
 
 # %%
+# Strip whitespace from all string columns
+df_person_page_flat = df_person_page_flat.map(
+    lambda x: x.strip() if isinstance(x, str) else x
+)
+
+# %%
 # SAVE TO SQL
 df_person_page_flat.to_sql(
     'ukgovt.minister_govuk_people_page_content_20240503',
