@@ -10,6 +10,7 @@
         - SQL: core.person
         - SQL: core.appointment
         - SQL: reference.[ukgovt.govuk_strings_people]
+        - SQL: source.[ukgovt.govuk_strings_people_20240503]
         - Excel: data/match_20240503.xlsx
     Outputs
         - Excel: data/match_20240503.xlsx
