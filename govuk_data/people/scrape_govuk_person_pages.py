@@ -10,7 +10,7 @@
         - API: https://www.gov.uk/api/content/government/people/<person_string>
     Outputs
         - pkl: data/df_person_page.pkl_20240503
-        - SQL: analysis.ukgovt.minister_govuk_people_page_content_20240503
+        - SQL: source.ukgovt.minister_govuk_people_page_content_20240503
     Parameters
         - base_url: Base URL for API request
         - headers: Headers for API request
@@ -129,7 +129,7 @@ df_person_page_flat = df_person_page_flat.map(
 # SAVE TO SQL
 df_person_page_flat.to_sql(
     'ukgovt.minister_govuk_people_page_content_20240503',
-    schema='analysis',
+    schema='source',
     con=connection,
     dtype={
         'ifg_person_id': UNIQUEIDENTIFIER,
