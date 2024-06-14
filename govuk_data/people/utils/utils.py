@@ -1,6 +1,6 @@
 def standardise_mos_puss_post_name(
     post_name: str
-) -> str:
+) -> tuple[str, str]:
     '''
     Standardise different MoS, PUSS post name formats
 
