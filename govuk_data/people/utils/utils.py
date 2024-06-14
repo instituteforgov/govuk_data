@@ -84,7 +84,7 @@ def standardise_mos_puss_post_name(
     # Set post rank
     if 'Parliamentary Under Secretary of State' in post_name:
         post_rank = 'PUSS'
-    elif 'Minister' in post_name:
+    elif 'Minister of State' in post_name:
         post_rank = 'MoS'
     else:
         post_rank = None
