@@ -42,7 +42,7 @@ def standardise_mos_puss_post_name(
 
     # Handle cases with brackets
     if '(' in post_name:
-        post_name = post_name.split('(')[1].split(')')[0]
+        post_name = post_name.split('(', maxsplit=1)[1].split(')', maxsplit=1)[0]
         if 'Minister for' not in post_name:
             post_name = 'Minister for ' + post_name
 
@@ -52,11 +52,11 @@ def standardise_mos_puss_post_name(
 
     # Handle 'Parliamentary Under Secretary of State and' cases
     if 'Parliamentary Under Secretary of State and ' in post_name:
-        post_name = post_name.split('and ')[1]
+        post_name = post_name.split('and ', maxsplit=1)[1]
 
     # Handle 'Parliamentary Under Secretary of State, ' cases
     if 'Parliamentary Under Secretary of State, ' in post_name:
-        post_name = post_name.split(', ')[1]
+        post_name = post_name.split(', ', maxsplit=1)[1]
 
     post_name = post_name.strip()
 
