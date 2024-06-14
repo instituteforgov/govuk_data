@@ -75,6 +75,37 @@ def remove_joint_post_name(
     return post_name
 
 
+def remove_lords_minister_post_names(
+    post_name: str
+) -> str:
+    '''
+    Remove details of Lords minister roles from post names
+
+    Parameters
+        - post_name: The post name to be cleaned
+
+    Returns
+        - post_name: The cleaned post name
+
+    Notes
+        - Formats handled:
+                - Parliamentary Under Secretary of State (Minister for the Lords)
+                - Minister of State for Civil Justice (Lords Minister)
+                - Parliamentary Under Secretary of State for Arts and Heritage and
+                DCMS Lords Minister
+        - This should be applied before standardising post names, as we may
+        need to standardise the results of this function
+    '''
+    if ' (Minister for the Lords)' in post_name:
+        post_name = post_name.replace(' (Minister for the Lords)', '')
+    elif ' (Lords Minister)' in post_name:
+        post_name = post_name.replace(' (Lords Minister)', '')
+    elif ' and DCMS Lords Minister' in post_name:
+        post_name = post_name.replace(' and DCMS Lords Minister', '')
+
+    return post_name
+
+
 def standardise_mos_puss_post_name(
     post_name: str
 ) -> tuple[str, str]:
