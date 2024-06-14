@@ -50,7 +50,7 @@ def identify_ministers_on_leave_acting(
     return post_name, is_on_leave, is_acting, leave_reason
 
 
-def remove_joint_post_names(
+def remove_joint_post_name(
     post_name: str
 ) -> str:
     '''
