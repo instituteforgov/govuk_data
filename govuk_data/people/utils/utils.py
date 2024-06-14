@@ -1,3 +1,52 @@
+def identify_ministers_on_leave_acting(
+    post_name: str
+) -> tuple[str, bool, bool, str]:
+    '''
+    Identify ministers on leave or doing a role in an acting capacity
+
+    Parameters
+        - post_name: The post name to be checked
+
+    Returns
+        - post_name: The post name with any leave or acting capacity identified
+        - is_on_leave: Whether the minister is on leave
+        - is_acting: Whether the minister is doing a role in an acting capacity
+        - leave_reason: The reason for the minister being on leave
+
+    Notes
+        - Formats handled:
+            - Minister on Leave (Attorney General)
+            - Minister on Leave (Minister of State)
+            - Interim Minister of State for Energy and Clean Growth
+            - Interim Parliamentary Secretary (Minister for the Constitution)
+            - Parliamentary Under Secretary of State for Sport, Tourism and
+            Heritage (maternity cover)
+        - This should be applied before standardising post names, as we may
+        need to standardise the results of this function
+    '''
+
+    # Handle on leave
+    if 'Minister on Leave' in post_name:
+        post_name = post_name.split('(', maxsplit=1)[1].split(')', maxsplit=1)[0]
+        is_on_leave = True
+        leave_reason = 'Maternity leave'
+    else:
+        is_on_leave = False
+        leave_reason = None
+
+    # Handle acting
+    if 'Interim' in post_name:
+        post_name = post_name.replace('Interim ', '')
+        is_acting = True
+    elif '(maternity cover)' in post_name:
+        post_name = post_name.replace(' (maternity cover)', '')
+        is_acting = True
+    else:
+        is_acting = False
+
+    return post_name, is_on_leave, is_acting, leave_reason
+
+
 def standardise_mos_puss_post_name(
     post_name: str
 ) -> tuple[str, str]:
