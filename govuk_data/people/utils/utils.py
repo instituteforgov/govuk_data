@@ -1,3 +1,6 @@
+import re
+
+
 def identify_ministers_on_leave_acting(
     post_name: str
 ) -> tuple[str, bool, bool, str]:
@@ -45,6 +48,31 @@ def identify_ministers_on_leave_acting(
         is_acting = False
 
     return post_name, is_on_leave, is_acting, leave_reason
+
+
+def remove_joint_post_names(
+    post_name: str
+) -> str:
+    '''
+    Remove details of roles being done in a joint capacity from ministerial post names
+
+    Parameters
+        - post_name: The post name to be cleaned
+
+    Returns
+        - post_name: The cleaned post name
+
+    Notes
+        - Formats handled:
+            - Minister of State (Climate, Environment and Energy – joint with FCDO and Defra)
+        - This should be applied before standardising post names, as we may
+        need to standardise the results of this function
+    '''
+    # Handle joint post names
+    if ' – joint with ' in post_name:
+        post_name = re.sub(r'\s\S\sjoint with\s\w*(\sand\s\w*)*', '', post_name)        # noqa: E501, F821 (needed to fend of a flake8 misfire)
+
+    return post_name
 
 
 def standardise_mos_puss_post_name(
