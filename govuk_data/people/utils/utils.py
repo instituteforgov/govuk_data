@@ -135,6 +135,8 @@ def standardise_mos_puss_post_name(
             - Parliamentary Under Secretary of State and Minister for Defence Procurement -> Minister for Defence Procurement       # noqa: E501
 
             - Parliamentary Under Secretary of State, Minister for Faith -> Minister for Faith
+
+            - Parliamentary Under Secretary of State and Minister for Defence Equipment, Support and Technology (including Defence Exports) -> Minister for Defence Equipment, Support and Technology (including Defence Exports)       # noqa: E501
     '''
     # Handle hyphenated PUSS post names
     if 'Under-Secretary' in post_name:
@@ -152,12 +154,6 @@ def standardise_mos_puss_post_name(
     else:
         post_rank = None
 
-    # Handle cases with brackets
-    if '(' in post_name:
-        post_name = post_name.split('(', maxsplit=1)[1].split(')', maxsplit=1)[0]
-        if 'Minister for' not in post_name:
-            post_name = 'Minister for ' + post_name
-
     # Handle 'Minister of State at' cases
     if 'Minister of State at' in post_name:
         post_name = 'Minister of State'
@@ -169,6 +165,19 @@ def standardise_mos_puss_post_name(
     # Handle 'Parliamentary Under Secretary of State, ' cases
     if 'Parliamentary Under Secretary of State, ' in post_name:
         post_name = post_name.split(', ', maxsplit=1)[1]
+
+    # Handle cases with brackets
+    # NB: Needs to be done after handling 'Parliamentary Under Secretary of State and' cases
+    # to handle 'Parliamentary Under Secretary of State and Minister for Defence Equipment,
+    # Support and Technology (including Defence Exports)' correctly
+    if '(' in post_name:
+        if '(Minister' in post_name:
+            post_name = post_name.split('(', maxsplit=1)[1].split(')', maxsplit=1)[0]
+        elif 'Minister for' not in post_name:
+            post_name = 'Minister for ' + post_name.split(
+                '(',
+                maxsplit=1
+            )[1].split(')', maxsplit=1)[0]
 
     post_name = post_name.strip()
 
