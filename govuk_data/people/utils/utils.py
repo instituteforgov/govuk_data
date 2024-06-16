@@ -161,6 +161,9 @@ def standardise_mos_puss_post_name(
 
             - Minister of State at the Northern Ireland Office -> Minister of State
 
+            - Minister of State for Cabinet Office -> Minister of State for Cabinet Office
+            - Minister of State for Cabinet Office (Cities and Constitution) -> Minister for Cities and Constitution
+
             - Parliamentary Under Secretary of State and Minister for Defence Procurement -> Minister for Defence Procurement       # noqa: E501
 
             - Parliamentary Under Secretary of State, Minister for Faith -> Minister for Faith
@@ -186,6 +189,14 @@ def standardise_mos_puss_post_name(
     # Handle 'Minister of State at' cases
     if 'Minister of State at' in post_name:
         post_name = 'Minister of State'
+
+    # Handle 'Minister of State for Cabinet Office' cases
+    if 'Minister of State for Cabinet Office' == post_name:
+        post_name = 'Minister of State'
+    elif 'Minister of State for Cabinet Office (' in post_name:
+        post_name = post_name.replace(
+            'Minister of State for Cabinet Office (', 'Minister for '
+        ).replace(')', '')
 
     # Handle 'Parliamentary Under Secretary of State and' cases
     if 'Parliamentary Under Secretary of State and ' in post_name:
