@@ -1,6 +1,35 @@
 import re
 
 
+def handle_parliamentary_secretary_post_name(
+    post_name: str
+) -> tuple[str, str]:
+    '''
+    Handle parliamentary secretary post names
+
+    Parameters
+        - post_name: The post name to be cleaned
+
+    Returns
+        - post_name: The cleaned post name
+        - post_rank: The rank of the post
+
+    Notes
+        - Formats handled:
+            - Parliamentary Secretary (Minister for Civil Society),
+            Parliamentary Secretary (Minister for Constitutional Reform)
+    '''
+    # Handle parliamentary secretary post names
+    if 'Parliamentary Secretary (Minister for' in post_name:
+        post_name = post_name.replace(
+            'Parliamentary Secretary (Minister for ',
+            'Parliamentary Secretary for '
+        ).replace(')', '')
+        post_rank = 'PUSS'
+
+    return post_name, post_rank
+
+
 def identify_ministers_on_leave_acting(
     post_name: str
 ) -> tuple[str, bool, bool, str]:
