@@ -140,6 +140,10 @@ def standardise_mos_puss_post_name(
     if 'Under-Secretary' in post_name:
         post_name = standardise_puss_punctuation(post_name)
 
+    # Handle cases where the post name is not a MoS or PUSS post name
+    if not ('Minister of State' or 'Parliamentary Under Secretary of State' in post_name):
+        return post_name, None
+
     # Set post rank
     if 'Parliamentary Under Secretary of State' in post_name:
         post_rank = 'PUSS'
