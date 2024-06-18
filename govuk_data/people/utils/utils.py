@@ -5,7 +5,7 @@ def handle_parliamentary_secretary_post_name(
     post_name: str
 ) -> tuple[str, str]:
     '''
-    Handle parliamentary secretary post names
+    Handle Parliamentary Secretary post names
 
     Parameters
         - post_name: The post name to be cleaned
@@ -27,7 +27,10 @@ def handle_parliamentary_secretary_post_name(
         ).replace(')', '')
         post_rank = 'PUSS'
 
-    return post_name, post_rank
+        return post_name, post_rank
+
+    else:
+        return post_name, None
 
 
 def identify_ministers_on_leave_acting(
