@@ -15,9 +15,16 @@ select distinct
 	[links.role_appointments.content_id] appointment_id_govuk,
     [links.role_appointments.links.role.content_id] post_id_govuk,
 	[links.role_appointments.links.role.title] post_name,
+    cast(null as varchar(256)) post_name_clean,
+    cast(null as varchar(128)) post_rank,
+    0 is_on_leave,
+    0 is_acting,
+    cast(null as varchar(128)) leave_reason,
     [links.role_appointments.links.role.links.ordered_parent_organisations.content_id] organisation_id_govuk,
     [links.role_appointments.links.role.links.ordered_parent_organisations.title] organisation_name,
+    cast(null as varchar(128)) organisation_name_clean,
 	[links.role_appointments.links.role.links.ordered_parent_organisations.details.acronym] organisation_short_name,
+	cast(null as varchar(128)) organisation_short_name_clean,
 	cast([links.role_appointments.details.started_on] as date) appointment_start_date,
 	cast([links.role_appointments.details.ended_on] as date) appointment_end_date
 into [analysis].[ukgovt.minister_govuk_people_page_content_20240503]
@@ -50,12 +57,36 @@ where
     )
 
 
-
 --- EDIT DATA
--- Clean organisation_name
+-- Fix one-off/uncommon issues with post_name
+-- NB: post_id_govuk isn't updated as part of this cleaning
 update g
 set
-    g.organisation_name =
+    g.post_name_clean =
+        case
+
+            -- Fix capitalisation
+            when g.post_name = 'Parliamentary Under Secretary of State for natural environment and science' then 'Parliamentary Under Secretary of State for Natural Environment and Science'
+            when g.post_name = 'Parliamentary Under Secretary of State for water, forestry, rural affairs and resource management' then 'Parliamentary Under Secretary of State for Water, Forestry, Rural Affairs and Resource Management'
+
+            -- Fix department-name-in-title denormalisation
+            when g.post_name = 'Parliamentary Under Secretary of State for BIS and DCMS and Minister for Intellectual Property' then 'Parliamentary Under Secretary of State for BIS and DCMS and Minister for Intellectual Property'
+            when g.post_name = 'Parliamentary Under Secretary of State for Business, Innovation and Skills and Minister for Intellectual Property' then 'Parliamentary Under Secretary of State for Business, Innovation and Skills and Minister for Intellectual Property'
+
+            -- Fix miscellaneous cases
+            when g.post_name = 'Commercial Secretary to the Treasury - Minister of State' then 'Commercial Secretary to the Treasury'
+
+            -- Base case
+            else g.post_name
+        end
+from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
+
+
+-- Clean organisation_name
+-- NB: organisation_id_govuk isn't updated as part of this cleaning
+update g
+set
+    g.organisation_name_clean =
         case
             when g.post_name in (
                 'Assistant Government Whip',
@@ -88,7 +119,7 @@ from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
 -- Clean organisation_short_name
 update g
 set
-    g.organisation_short_name =
+    g.organisation_short_name_clean =
         case
             when g.organisation_name = 'Cabinet Office' then 'CO'
             when g.organisation_name = 'Department for Digital, Culture, Media & Sport' then 'DCMS'
