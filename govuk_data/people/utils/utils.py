@@ -16,8 +16,8 @@ def handle_parliamentary_secretary_post_name(
 
     Notes
         - Formats handled:
-            - Parliamentary Secretary (Minister for Civil Society),
-            Parliamentary Secretary (Minister for Constitutional Reform)
+            - Parliamentary Secretary to the Treasury (Chief Whip) -> No change
+            - Parliamentary Secretary (Minister for Civil Society) -> Parliamentary Secretary for Civil Society     # noqa: E501
     '''
     # Handle parliamentary secretary post names
     if 'Parliamentary Secretary (Minister for' in post_name:
