@@ -139,15 +139,19 @@ df_merge['post_name_match'] = df_merge.apply(
 # %%
 # Date match on start_date, end_date: 1 if exact match, minus 0.01 for each day difference,
 # 0 if more than 100 days difference
-df_merge['date_match'] = (1 - (
+df_merge['start_date_match'] = 1 - (
     abs(df_merge['start_date_ifg'] - df_merge['start_date_govuk']).dt.days / 100
-)) * (1 - (
+)
+df_merge['start_date_match'] = df_merge['start_date_match'].clip(lower=0)
+df_merge['end_date_match'] = 1 - (
     abs(df_merge['end_date_ifg'] - df_merge['end_date_govuk']).dt.days / 100
-))
-df_merge['date_match'] = df_merge['date_match'].clip(lower=0)
+)
+df_merge['end_date_match'] = df_merge['end_date_match'].clip(lower=0)
+
+df_merge['date_match'] = df_merge['start_date_match'] * 0.5 + df_merge['end_date_match'] * 0.5
 
 # %%
-# Weighted average of matches
+# Calculate weighted average of matches
 df_merge['match_score'] = (
     df_merge['organisation_short_name_match'] * 0.2 +
     df_merge['post_name_match'] * 0.6 +
