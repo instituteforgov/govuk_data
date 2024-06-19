@@ -152,12 +152,14 @@ set
 
             -- Missing organisation names
             when g.organisation_name is null and g.post_name = 'Minister of State' and g.person_name = 'Lord Howell of Guildford' then 'Foreign, Commonwealth & Development Office'
+            when g.organisation_name is null and g.post_name = 'Minister on Leave (Secretary of State)' and g.person_name = 'Michelle Donelan MP' then 'Department for Science, Innovation and Technology'
             when g.organisation_name is null and g.post_name = 'Minister on Leave (Minister of State)' and g.person_name = 'Julia Lopez MP' then 'Department for Culture, Media and Sport'
             when g.organisation_name is null and g.post_name = 'Minister on Leave (Parliamentary Under Secretary of State)' and g.person_name = 'Baroness Penn' then 'Department for Levelling Up, Housing and Communities'
             when g.organisation_name is null and g.post_name = 'Parliamentary Under Secretary of State' and g.person_name = 'Nick Hurd' then 'Department for International Development'
             when g.organisation_name is null and g.post_name = 'Parliamentary Under Secretary of State for Sport and Civil Society' and g.person_name in ('Helen Grant MP', 'Tracey Crouch MP') then 'Department for Culture, Media and Sport'
             when g.organisation_name is null and g.post_name = 'Parliamentary Under Secretary of State for Women and Equalities' and g.person_name = 'Lynne Featherstone' then 'Department for Culture, Media and Sport'
             when g.organisation_name is null and g.post_name = 'Parliamentary Under Secretary of State for Women and Equalities' and g.person_name = 'Helen Grant MP' then 'Department for Culture, Media and Sport'
+            when g.organisation_name is null and g.post_name = 'Minister for Women and Equalities' then 'Government Equalities Office'
 
             -- Base case
             else g.organisation_name
@@ -212,12 +214,14 @@ set
 
             -- Missing organisation short names
             when g.organisation_name is null and g.post_name = 'Minister of State' and g.person_name = 'Lord Howell of Guildford' then 'FCDO'
+            when g.organisation_name is null and g.post_name = 'Minister on Leave (Secretary of State)' and g.person_name = 'Michelle Donelan MP' then 'DSIT'
             when g.organisation_name is null and g.post_name = 'Minister on Leave (Minister of State)' and g.person_name = 'Julia Lopez MP' then 'DCMS'
             when g.organisation_name is null and g.post_name = 'Minister on Leave (Parliamentary Under Secretary of State)' and g.person_name = 'Baroness Penn' then 'DLUHC'
             when g.organisation_name is null and g.post_name = 'Parliamentary Under Secretary of State' and g.person_name = 'Nick Hurd' then 'DfID'
             when g.organisation_name is null and g.post_name = 'Parliamentary Under Secretary of State for Sport and Civil Society' and g.person_name in ('Helen Grant MP', 'Tracey Crouch MP') then 'DCMS'
             when g.organisation_name is null and g.post_name = 'Parliamentary Under Secretary of State for Women and Equalities' and g.person_name = 'Lynne Featherstone' then 'DCMS'
             when g.organisation_name is null and g.post_name = 'Parliamentary Under Secretary of State for Women and Equalities' and g.person_name = 'Helen Grant MP' then 'DCMS'
+            when g.organisation_name is null and g.post_name = 'Minister for Women and Equalities' then 'GEO'
 
             -- Base case
             else g.organisation_short_name
