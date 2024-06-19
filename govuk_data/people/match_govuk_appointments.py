@@ -82,7 +82,6 @@ df_ifg_appt = pd.read_sql_query(
     con=connection,
 )
 
-# List of gov.uk identifiers
 df_govuk_appt = pd.read_sql_query(
     """
     select
@@ -95,8 +94,8 @@ df_govuk_appt = pd.read_sql_query(
         g.leave_reason,
         g.organisation_name_clean organisation_name,
         g.organisation_short_name_clean organisation_short_name,
-        g.appointment_start_date,
-        g.appointment_end_date
+        g.appointment_start_date start_date,
+        g.appointment_end_date end_date
     from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
     """,
     con=connection,
