@@ -138,6 +138,26 @@ def remove_lords_minister_post_names(
     return post_name
 
 
+def replace_ampersand(
+    post_name: str
+) -> str:
+    '''
+    Replace '&' with 'and' in post names
+
+    Parameters
+        - post_name: The post name to be cleaned
+
+    Returns
+        - post_name: The cleaned post name
+
+    Notes
+        None
+    '''
+    post_name = post_name.replace('&', 'and')
+
+    return post_name
+
+
 def standardise_mos_puss_post_name(
     post_name: str
 ) -> tuple[str, str]:
