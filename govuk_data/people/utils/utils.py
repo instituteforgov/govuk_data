@@ -1,6 +1,29 @@
 import re
 
 
+def handle_equalities_minister_post_name(
+    post_name: str
+) -> str:
+    '''
+    Handle post names that are denormalised by having an equalities minister
+    name appended
+
+    Parameters
+        - post_name: The post name to be cleaned
+
+    Returns
+        - post_name: The cleaned post name
+
+    Notes
+        - Formats handled:
+            - Minister for Sport, Tourism and Civil Society, and Minister for Equalities -> Minister for Sport, Tourism and Civil Society       # noqa: E501
+    '''
+    if ', and Minister for Equalities' in post_name:
+        post_name = post_name.replace(', and Minister for Equalities', '')
+
+    return post_name
+
+
 def handle_parliamentary_secretary_post_name(
     post_name: str
 ) -> tuple[str, str]:
