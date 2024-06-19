@@ -183,6 +183,7 @@ def standardise_mos_puss_post_name(
             - Parliamentary Under Secretary of State (Minister for AI and Intellectual Property) -> Minister for AI and Intellectual Property       # noqa: E501
 
             - Minister of State at the Northern Ireland Office -> Minister of State
+            - Minister of State for Asia and the Pacific at the Foreign & Commonwealth Office
 
             - Minister of State for Cabinet Office -> Minister of State for Cabinet Office
             - Minister of State for Cabinet Office (Cities and Constitution) -> Minister for Cities and Constitution
@@ -211,9 +212,9 @@ def standardise_mos_puss_post_name(
     else:
         post_rank = None
 
-    # Handle 'Minister of State at' cases
-    if 'Minister of State at' in post_name:
-        post_name = 'Minister of State'
+    # Handle 'Minister of State at the' cases
+    if ' at the ' in post_name:
+        post_name = post_name.split(' at the ', maxsplit=1)[0]
 
     # Handle 'Minister of State for Cabinet Office' cases
     if 'Minister of State for Cabinet Office' == post_name:
