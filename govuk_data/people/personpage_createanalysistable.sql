@@ -68,6 +68,7 @@ set
             -- Fix capitalisation
             when g.post_name = 'Parliamentary Under Secretary of State for natural environment and science' then 'Parliamentary Under Secretary of State for Natural Environment and Science'
             when g.post_name = 'Parliamentary Under Secretary of State for water, forestry, rural affairs and resource management' then 'Parliamentary Under Secretary of State for Water, Forestry, Rural Affairs and Resource Management'
+            when g.post_name = 'Parliamentary Under Secretary of State for farming, food and marine environment' then 'Parliamentary Under Secretary of State for Farming, Food and Marine Environment'
 
             -- Fix department-name-in-title denormalisation
             when g.post_name = 'Parliamentary Under Secretary of State for BIS and DCMS and Minister for Intellectual Property' then 'Minister for Intellectual Property'
