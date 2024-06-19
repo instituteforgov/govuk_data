@@ -80,15 +80,25 @@ df_ifg_appt = pd.read_sql_query(
             t.organisation_id = o.id
     ''',
     con=connection,
-    dtype={
-        'person_id': str,
-    }
 )
 
 # List of gov.uk identifiers
-df_govuk_appt = pd.read_sql_table(
-    'ukgovt.minister_govuk_people_page_content_20240503',
-    schema='analysis',
+df_govuk_appt = pd.read_sql_query(
+    """
+    select
+        g.person_id,
+        g.person_name,
+        g.post_name_clean post_name,
+        g.post_rank,
+        g.is_on_leave,
+        g.is_acting,
+        g.leave_reason,
+        g.organisation_name_clean organisation_name,
+        g.organisation_short_name_clean organisation_short_name,
+        g.appointment_start_date,
+        g.appointment_end_date
+    from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
+    """,
     con=connection,
 )
 
