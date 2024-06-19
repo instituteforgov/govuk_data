@@ -70,8 +70,8 @@ set
             when g.post_name = 'Parliamentary Under Secretary of State for water, forestry, rural affairs and resource management' then 'Parliamentary Under Secretary of State for Water, Forestry, Rural Affairs and Resource Management'
 
             -- Fix department-name-in-title denormalisation
-            when g.post_name = 'Parliamentary Under Secretary of State for BIS and DCMS and Minister for Intellectual Property' then 'Parliamentary Under Secretary of State for BIS and DCMS and Minister for Intellectual Property'
-            when g.post_name = 'Parliamentary Under Secretary of State for Business, Innovation and Skills and Minister for Intellectual Property' then 'Parliamentary Under Secretary of State for Business, Innovation and Skills and Minister for Intellectual Property'
+            when g.post_name = 'Parliamentary Under Secretary of State for BIS and DCMS and Minister for Intellectual Property' then 'Minister for Intellectual Property'
+            when g.post_name = 'Parliamentary Under Secretary of State for Business, Innovation and Skills and Minister for Intellectual Property' then 'Minister for Intellectual Property'
 
             -- Fix miscellaneous cases
             when g.post_name = 'Commercial Secretary to the Treasury - Minister of State' then 'Commercial Secretary to the Treasury'
