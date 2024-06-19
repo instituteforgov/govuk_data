@@ -27,6 +27,7 @@
 import os
 
 import pandas as pd
+from rapidfuzz import fuzz
 
 from ds_utils import database_operations as dbo
 
@@ -111,9 +112,44 @@ df_ifg_appt['end_date'] = pd.to_datetime(df_ifg_appt['end_date'], errors='coerce
 # %%
 # JOIN DATASETS
 # Initial match - exact match on person_id
-pd.merge(
+df_merge = pd.merge(
     df_ifg_appt,
     df_govuk_appt,
     how='inner',
     on='person_id',
+    suffixes=('_ifg', '_govuk')
+)
+
+# %%
+# Exact match on organisation_short_name: 1 if match, 0.5 if not
+df_merge['organisation_short_name_match'] = 0.5
+df_merge.loc[
+    df_merge['organisation_short_name_ifg'] == df_merge['organisation_short_name_govuk'],
+    'organisation_short_name_match'
+] = 1
+
+# %%
+# Fuzzy match on post_name
+df_merge['post_name_match'] = 0
+df_merge['post_name_match'] = df_merge.apply(
+    lambda x: fuzz.ratio(x['post_name_ifg'], x['post_name_govuk']) / 100,
+    axis=1
+)
+
+# %%
+# Date match on start_date, end_date: 1 if exact match, minus 0.01 for each day difference,
+# 0 if more than 100 days difference
+df_merge['date_match'] = (1 - (
+    abs(df_merge['start_date_ifg'] - df_merge['start_date_govuk']).dt.days / 100
+)) * (1 - (
+    abs(df_merge['end_date_ifg'] - df_merge['end_date_govuk']).dt.days / 100
+))
+df_merge['date_match'] = df_merge['date_match'].clip(lower=0)
+
+# %%
+# Weighted average of matches
+df_merge['match_score'] = (
+    df_merge['organisation_short_name_match'] * 0.2 +
+    df_merge['post_name_match'] * 0.6 +
+    df_merge['date_match'] * 0.2
 )
