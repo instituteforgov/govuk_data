@@ -36,6 +36,12 @@ where
     -- Exclude non-ministerial roles (e.g. done before/after being a minister)
     [links.role_appointments.links.role.document_type] = 'ministerial_role' and
 
+    -- Exclude roles we don't include in the min d/b
+    [links.role_appointments.links.role.title] not in (
+        'First Lord of the Treasury',
+        'President of the Board of Trade'
+    ) and
+
     -- Restrict to departments
     -- NB: This does drop a small number of Disability Unit/Equality Unit/Race Disparity Unit that aren't
     -- duplicates of GEO records. But in all cases there is a department-proper record that we're retaining
