@@ -76,6 +76,7 @@ set
 
             -- Fix miscellaneous cases
             when g.post_name = 'Commercial Secretary to the Treasury - Minister of State' then 'Commercial Secretary to the Treasury'
+            when g.post_name = 'Parliamentary Under Secretary of State (Minister for Lords)' then 'Parliamentary Under Secretary of State'
 
             -- Base case
             else g.post_name
