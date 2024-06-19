@@ -125,6 +125,7 @@ def remove_lords_minister_post_names(
                 - Minister of State for Civil Justice (Lords Minister)
                 - Parliamentary Under Secretary of State for Arts and Heritage and
                 DCMS Lords Minister
+                - Minister for Social Housing and Faith, and Lords Minister
         - This should be applied before standardising post names, as we may
         need to standardise the results of this function
     '''
@@ -134,6 +135,8 @@ def remove_lords_minister_post_names(
         post_name = post_name.replace(' (Lords Minister)', '')
     elif ' and DCMS Lords Minister' in post_name:
         post_name = post_name.replace(' and DCMS Lords Minister', '')
+    elif ', and Lords Minister' in post_name:
+        post_name = post_name.replace(', and Lords Minister', '')
 
     return post_name
 
