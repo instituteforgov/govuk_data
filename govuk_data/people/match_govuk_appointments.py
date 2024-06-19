@@ -25,7 +25,6 @@
 '''
 
 import os
-import uuid
 
 import pandas as pd
 
@@ -102,11 +101,12 @@ df_govuk_appt = pd.read_sql_query(
 )
 
 # %%
-# CLEAN DATA
-# Convert df_ifg_appt['person_id'] to UUID
-df_ifg_appt['person_id'] = df_ifg_appt['person_id'].apply(
-    lambda x: uuid.UUID(x)
-)
+# EDIT DATA
+# Convert date columns to datetime
+df_govuk_appt['start_date'] = pd.to_datetime(df_govuk_appt['start_date'], errors='coerce')
+df_govuk_appt['end_date'] = pd.to_datetime(df_govuk_appt['end_date'], errors='coerce')
+df_ifg_appt['start_date'] = pd.to_datetime(df_ifg_appt['start_date'], errors='coerce')
+df_ifg_appt['end_date'] = pd.to_datetime(df_ifg_appt['end_date'], errors='coerce')
 
 # %%
 # JOIN DATASETS
