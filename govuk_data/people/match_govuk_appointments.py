@@ -79,6 +79,8 @@ df_ifg_appt = pd.read_sql_query(
             a.post_id = t.id
         inner join core.organisation o on
             t.organisation_id = o.id
+    where
+        ac.start_date >= '2010-05-11'
     ''',
     con=connection,
 )
