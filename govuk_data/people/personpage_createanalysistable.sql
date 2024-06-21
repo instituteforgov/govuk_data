@@ -82,7 +82,7 @@ set
             when g.post_name = 'Parliamentary Under Secretary of State for Business, Innovation and Skills and Minister for Intellectual Property' then 'Minister for Intellectual Property'
 
             -- Formatting of whip roles
-            when g.post_name = 'Assistant Government Whip' then 'Assistant Whip'
+            when g.post_name = 'Assistant Government Whip' then 'Assistant Whip (HM Treasury)'
             when g.post_name = 'Baroness in Waiting (Government Whip)' then 'Baroness in Waiting'
             when g.post_name = 'Minister (Baroness in Waiting)' then 'Baroness in Waiting'
             when g.post_name = 'Spokesman and Whip in the House of Lords, Baroness in Waiting' then 'Baroness in Waiting'
@@ -90,13 +90,13 @@ set
             when g.post_name = 'Comptroller of HM Household (Government Whip)' then 'Comptroller of HM Household (Senior Whip)'
             when g.post_name = 'Government Whip, Comptroller of HM Household' then 'Comptroller of HM Household (Senior Whip)'
             when g.post_name = 'Deputy Chief Whip, Comptroller of HM Household' then 'Comptroller of HM Household (Senior Whip)'
-            when g.post_name = 'Government Whip' then 'Whip'
             when g.post_name = 'Government Whip (Lord Commissioner of HM Treasury)' then 'Lord Commissioner (Whip)'
             when g.post_name = 'Government Whip, Lord Commissioner of HM Treasury' then 'Lord Commissioner (Whip)'
-            when g.post_name = 'Government Whip, Vice Chamberlain of HM Household' then 'Vice Chamberlain of HM Household'
-            when g.post_name = 'Junior Lord of the Treasury (Government Whip)' then 'Junior Lord of the Treasury'
+            when g.post_name = 'Junior Lord of the Treasury (Government Whip)' then 'Lord Commissioner (Whip)'
+            when g.person_name in ('Douglas Ross MP') and g.post_name = 'Government Whip' then 'Lord Commissioner (Whip)'
             when g.post_name = 'Lord in Waiting (Government Whip)' then 'Lord in Waiting'
-            when g.post_name = 'Vice Chamberlain of HM Household (Government Whip)' then 'Vice Chamberlain of HM Household'
+            when g.post_name = 'Government Whip, Vice Chamberlain of HM Household' then 'Vice Chamberlain of HM Household (Senior Whip)'
+            when g.post_name = 'Vice Chamberlain of HM Household (Government Whip)' then 'Vice Chamberlain of HM Household (Senior Whip)'
 
             -- Joint roles
             -- NB: Handled distinctly from other Parliamentary Secretary roles, as we require joint roles to be recorded under the same name at each department
