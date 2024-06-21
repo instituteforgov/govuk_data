@@ -171,8 +171,8 @@ df_merge['date_match'] = df_merge['start_date_match'] * 0.5 + df_merge['end_date
 # %%
 # Calculate weighted average of matches
 df_merge['match_score'] = (
-    df_merge['organisation_short_name_match'] * 0.2 +
-    df_merge['post_name_match'] * 0.6 +
+    df_merge['organisation_short_name_match'] * 0.3 +
+    df_merge['post_name_match'] * 0.5 +
     df_merge['date_match'] * 0.2
 )
 
