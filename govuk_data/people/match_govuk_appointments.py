@@ -207,6 +207,16 @@ df_merge.loc[
 ] = True
 
 # %%
+# Auto-accept matches with organisation_short_name_match = 1, post_name_match = 1 and
+# date_match >= 0.8
+df_merge.loc[
+    (df_merge['organisation_short_name_match'] == 1) &
+    (df_merge['post_name_match'] == 1) &
+    (df_merge['date_match'] >= 0.8),
+    'match_accepted'
+] = True
+
+# %%
 # SAVE TO DB
 uuid_table_name = str(uuid.uuid4())
 
