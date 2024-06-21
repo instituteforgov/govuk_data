@@ -25,9 +25,11 @@
 '''
 
 import os
+import uuid
 
 import pandas as pd
 from rapidfuzz import fuzz
+from sqlalchemy.dialects.mssql import BIT, DATE, FLOAT, NVARCHAR, UNIQUEIDENTIFIER
 
 from ds_utils import database_operations as dbo
 
@@ -172,4 +174,78 @@ df_merge['match_score'] = (
     df_merge['organisation_short_name_match'] * 0.2 +
     df_merge['post_name_match'] * 0.6 +
     df_merge['date_match'] * 0.2
+)
+
+# %%
+# Sort by appointment_id_ifg and match_score
+df_merge = df_merge.sort_values(
+    by=['person_name_ifg', 'appointment_id_ifg', 'match_score'],
+    ascending=[True, True, False]
+).reset_index(drop=True)
+
+# %%
+# Add columns for tracking matching
+df_merge['reviewed'] = False
+df_merge['match_accepted'] = False
+df_merge['replace_post_name'] = False
+df_merge['notes'] = None
+
+# %%
+# Auto-accept matches with match_score >= 1
+df_merge.loc[
+    df_merge['match_score'] >= 1,
+    'match_accepted'
+] = True
+df_merge.loc[
+    df_merge['appointment_id_ifg'].isin(
+        df_merge.loc[
+            df_merge['match_accepted'],
+            'appointment_id_ifg'
+        ]
+    ),
+    'reviewed'
+] = True
+
+# %%
+# SAVE TO DB
+uuid_table_name = str(uuid.uuid4())
+
+df_merge.to_sql(
+    uuid_table_name,
+    schema='workflow',
+    con=connection,
+    dtype={
+        'appointment_id_ifg': UNIQUEIDENTIFIER,
+        'person_id': UNIQUEIDENTIFIER,
+        'person_name': NVARCHAR(100),
+        'MP/peer': NVARCHAR(10),
+        'post_name': NVARCHAR(100),
+        'post_rank': NVARCHAR(100),
+        'organisation_name': NVARCHAR(100),
+        'organisation_short_name': NVARCHAR(100),
+        'cabinet_status': NVARCHAR(100),
+        'is_on_leave': BIT,
+        'is_acting': BIT,
+        'leave_reason': NVARCHAR(100),
+        'start_date': DATE,
+        'end_date': DATE,
+        'appointment_id_govuk': UNIQUEIDENTIFIER,
+        'post_name_clean': NVARCHAR(100),
+        'organisation_name_clean': NVARCHAR(100),
+        'organisation_short_name_clean': NVARCHAR(100),
+        'appointment_start_date': DATE,
+        'appointment_end_date': DATE,
+        'organisation_short_name_match': FLOAT,
+        'post_name_match': FLOAT,
+        'start_date_match': FLOAT,
+        'end_date_match': FLOAT,
+        'date_match': FLOAT,
+        'match_score': FLOAT,
+        'reviewed': BIT,
+        'match_accepted': BIT,
+        'replace_post_name': BIT,
+        'notes': NVARCHAR(512),
+    },
+    index=False,
+    if_exists='replace',
 )
