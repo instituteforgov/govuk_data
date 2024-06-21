@@ -110,6 +110,18 @@ df_ifg_appt['start_date'] = pd.to_datetime(df_ifg_appt['start_date'], errors='co
 df_ifg_appt['end_date'] = pd.to_datetime(df_ifg_appt['end_date'], errors='coerce')
 
 # %%
+# Set end dates of ongoing appointments to today's date
+df_govuk_appt.loc[
+    df_govuk_appt['end_date'].isnull(),
+    'end_date'
+] = pd.Timestamp.now().normalize()
+
+df_ifg_appt.loc[
+    df_ifg_appt['end_date'].isnull(),
+    'end_date'
+] = pd.Timestamp.now().normalize()
+
+# %%
 # JOIN DATASETS
 # Initial match - exact match on person_id
 df_merge = pd.merge(
