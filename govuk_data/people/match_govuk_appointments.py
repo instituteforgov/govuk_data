@@ -48,6 +48,7 @@ connection = dbo.connect_sql_db(
 df_ifg_appt = pd.read_sql_query(
     '''
     select
+        a.id appointment_id,
         p.id person_id,
         p.name person_name,
         case
@@ -85,6 +86,7 @@ df_ifg_appt = pd.read_sql_query(
 df_govuk_appt = pd.read_sql_query(
     """
     select
+        g.appointment_id_govuk appointment_id,
         g.person_id,
         g.person_name,
         g.post_name_clean post_name,
