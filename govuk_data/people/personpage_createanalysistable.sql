@@ -78,6 +78,7 @@ set
             when g.post_name = 'Parliamentary Under Secretary of State for farming, food and marine environment' then 'Parliamentary Under Secretary of State for Farming, Food and Marine Environment'
 
             -- Fix department-name-in-title denormalisation
+            when g.post_name = 'Secretary of State for Ministry of Housing, Communities & Local Government' then 'Secretary of State for Housing, Communities & Local Government'
             when g.post_name = 'Parliamentary Under Secretary of State for BIS and DCMS and Minister for Intellectual Property' then 'Minister for Intellectual Property'
             when g.post_name = 'Parliamentary Under Secretary of State for Business, Innovation and Skills and Minister for Intellectual Property' then 'Minister for Intellectual Property'
 
