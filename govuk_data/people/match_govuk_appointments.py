@@ -217,6 +217,18 @@ df_merge.loc[
 ] = True
 
 # %%
+# Set reviewed to True for appointments that have been auto-accepted
+df_merge.loc[
+    df_merge['appointment_id_ifg'].isin(
+        df_merge.loc[
+            df_merge['match_accepted'],
+            'appointment_id_ifg'
+        ]
+    ),
+    'reviewed'
+] = True
+
+# %%
 # SAVE TO DB
 uuid_table_name = str(uuid.uuid4())
 
