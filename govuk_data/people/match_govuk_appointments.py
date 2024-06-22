@@ -196,15 +196,6 @@ df_merge.loc[
     df_merge['match_score'] >= 1,
     'match_accepted'
 ] = True
-df_merge.loc[
-    df_merge['appointment_id_ifg'].isin(
-        df_merge.loc[
-            df_merge['match_accepted'],
-            'appointment_id_ifg'
-        ]
-    ),
-    'reviewed'
-] = True
 
 # %%
 # Auto-accept matches with organisation_short_name_match = 1, post_name_match = 1 and
