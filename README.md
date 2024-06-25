@@ -8,3 +8,5 @@
 | `personpage_createanalysistable.sql` | Create analysis table of person page data |
 | `personpage_qa.sql` | Explore and QA person page data |
 | `clean_govuk_person_roles.py` | Clean GOV.UK person page data |
+| `match_govuk_appointments.py` | Read in analysis table of GOV.UK appointments and match to ministers database |
+| `personpage_reviewmatchoutput.sql` | Review output of manual review of possible matches |
