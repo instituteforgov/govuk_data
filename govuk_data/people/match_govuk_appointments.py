@@ -14,7 +14,7 @@
         - SQL: core.post
         - SQL: core.organisation
     Outputs
-        - TODO
+        - SQL: workflow.<uuid>
     Parameters
         None
     Notes
