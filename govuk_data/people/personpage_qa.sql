@@ -43,6 +43,16 @@ where
 
 
 --- QA data
+-- Appointments with a duration of one day or less
+select
+    *
+from [analysis].[ukgovt.minister_govuk_people_page_content_20240503]
+where
+    datediff(day, appointment_start_date, appointment_end_date) <= 1
+order by
+    person_name
+
+
 -- Check for complete duplicates
 drop table if exists #complete_duplicates;
 select

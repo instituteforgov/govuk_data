@@ -65,6 +65,13 @@ go
 
 
 --- EDIT DATA
+-- Drop appointments with a duration of one day or less
+delete g
+from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
+where
+    datediff(day, g.appointment_start_date, g.appointment_end_date) <= 1
+
+
 -- Fix one-off/uncommon issues with post_name
 -- NB: post_id_govuk isn't updated as part of this cleaning
 update g
