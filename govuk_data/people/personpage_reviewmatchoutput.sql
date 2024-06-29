@@ -217,3 +217,38 @@ where
             count(distinct w2.post_name_govuk) > 1
     ) and
     w1.post_rank_ifg != w1.post_rank_govuk
+
+
+-- Review distinct post name changes we plan to make
+select distinct
+    w1.post_name_ifg,
+    w1.post_name_govuk,
+    w1.organisation_short_name_ifg,
+    w1.organisation_short_name_govuk,
+    w1.post_rank_ifg,
+    w1.post_rank_govuk
+from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w1
+where
+    w1.reviewed = 1 and
+    w1.match_accepted = 1 and
+    w1.replace_post_name = 1 and
+    not exists (
+        select
+            w2.appointment_id_ifg,
+            count(distinct w2.post_name_govuk)
+        from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w2
+        where
+            w1.appointment_id_ifg = w2.appointment_id_ifg and
+            w2.match_accepted = 1 and
+            w2.post_name_ifg not in (
+                'Minister for Women',
+                'Minister for Equalities',
+                'Minister for Women and Equalities',
+                'Minister of State for Women and Equalities',
+                'Parliamentary Under Secretary of State for Women and Equalities'
+            )
+        group by
+            w2.appointment_id_ifg
+        having
+            count(distinct w2.post_name_govuk) > 1
+    )
