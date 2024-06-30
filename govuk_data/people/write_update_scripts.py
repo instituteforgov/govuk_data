@@ -159,7 +159,7 @@ for index, row in df_appointments_to_edit.iterrows():
     assert pd.read_sql_query(
         sql=update_appointments_count_snippet,
         con=connection,
-    ).iloc[0] == 1, (
+    ).iloc[0, 0] == 1, (
         f"Expected 1 record to be affected, but {update_appointments_count_snippet} "
         f"affected {
             pd.read_sql_query(sql=update_appointments_count_snippet, con=connection).iloc[0, 0]
