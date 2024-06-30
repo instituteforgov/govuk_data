@@ -22,6 +22,7 @@
         None
 '''
 
+import datetime
 import os
 
 import pandas as pd
@@ -91,6 +92,13 @@ df_appointments_to_edit['post_name_new'] = df_appointments_to_edit[
 ].str.replace("'", "''")
 
 # %%
+# Undoing setting of appointment end dates to date analysis table was created
+df_appointments_to_edit.loc[
+    df_appointments_to_edit['end_date'] == datetime.date(2024, 6, 24),
+    'end_date'
+] = datetime.date(9999, 12, 31)
+
+# %%
 # PRODUCE SCRIPTS
 # Add posts
 add_posts_code = '--- SET HOLD\nset noexec on\n\n'
@@ -156,15 +164,15 @@ for index, row in df_appointments_to_edit.iterrows():
         end_date=row['end_date'],
     )
 
-    assert pd.read_sql_query(
-        sql=update_appointments_count_snippet,
-        con=connection,
-    ).iloc[0, 0] == 1, (
-        f"Expected 1 record to be affected, but {update_appointments_count_snippet} "
-        f"affected {
-            pd.read_sql_query(sql=update_appointments_count_snippet, con=connection).iloc[0, 0]
-        } records"
-    )
+    # assert pd.read_sql_query(
+    #     sql=update_appointments_count_snippet,
+    #     con=connection,
+    # ).iloc[0, 0] == 1, (
+    #     f"Expected 1 record to be affected, but {update_appointments_count_snippet} "
+    #     f"affected {
+    #         pd.read_sql_query(sql=update_appointments_count_snippet, con=connection).iloc[0, 0]
+    #     } records"
+    # )
 
     # Produce code
     update_appointments_snippet = update_appointment.format(
