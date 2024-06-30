@@ -10,8 +10,10 @@
         - SQL: workflow.<uuid>
         - script: 'utils/identify_posts_to_add.sql'
         - script: 'utils/identify_appointments_to_edit.sql'
+        - script: 'utils/create_post_count.sql'
         - script: 'utils/create_post.sql'
         - script: 'utils/update_appointment.sql'
+        - script: 'utils/update_appointment_count.sql'
     Outputs
         None
     Parameters
@@ -48,9 +50,17 @@ with open('utils/identify_posts_to_add.sql', 'r') as file:
 with open('utils/identify_appointments_to_edit.sql', 'r') as file:
     identify_appointments_to_edit = file.read()
 
+# Create post count
+with open('utils/create_post_count.sql', 'r') as file:
+    create_post_count = file.read()
+
 # Create post
 with open('utils/create_post.sql', 'r') as file:
     create_post = file.read()
+
+# Update appointment count
+with open('utils/update_appointment_count.sql', 'r') as file:
+    update_appointment_count = file.read()
 
 # Update appointment
 with open('utils/update_appointment.sql', 'r') as file:
@@ -71,14 +81,44 @@ df_appointments_to_edit = pd.read_sql_query(
 # %%
 # PRODUCE SCRIPTS
 # Add posts
-add_posts_code = ''
+add_posts_code = '--- SET HOLD\nset noexec on\n\n'
 
 for index, row in df_posts_to_add.iterrows():
+
+    # Check if number of records affected is as expected
+    add_posts_count_snippet = create_post_count.format(
+        post_name=row['post_name'],
+        post_rank=row['post_rank'],
+        organisation_name=row['organisation_name'],
+        organisation_short_name=row['organisation_short_name'],
+        organisation_start_date=row['organisation_start_date'],
+        organisation_end_date=row['organisation_end_date'],
+    )
+    add_posts_count_snippet = add_posts_count_snippet.replace(
+        "= 'None'", "is null"
+    )
+
+    assert pd.read_sql_query(
+        sql=add_posts_count_snippet,
+        con=connection,
+    ).iloc[0, 0] == 1, (
+        f"Expected 1 record to be affected, but {add_posts_count_snippet} "
+        f"affected {
+            pd.read_sql_query(sql=add_posts_count_snippet, con=connection).iloc[0, 0]
+        } records"
+    )
+
+    # Produce code
     add_posts_snippet = create_post.format(
         post_name=row['post_name'],
         post_rank=row['post_rank'],
         organisation_name=row['organisation_name'],
         organisation_short_name=row['organisation_short_name'],
+        organisation_start_date=row['organisation_start_date'],
+        organisation_end_date=row['organisation_end_date'],
+    )
+    add_posts_snippet = add_posts_snippet.replace(
+        "= 'None'", "is null"
     )
 
     add_posts_code += add_posts_snippet + '\n'
@@ -87,9 +127,34 @@ print(add_posts_code)
 
 # %%
 # Update appointments
-update_appointments_code = ''
+update_appointments_code = '--- SET HOLD\nset noexec on\n\n'
 
 for index, row in df_appointments_to_edit.iterrows():
+
+    # Check if number of records affected is as expected
+    update_appointments_count_snippet = update_appointment_count.format(
+        person_name=row['person_name'],
+        post_name_old=row['post_name_old'],
+        post_name_new=row['post_name_new'],
+        organisation_name=row['organisation_name'],
+        organisation_short_name=row['organisation_short_name'],
+        post_rank_old=row['post_rank_old'],
+        post_rank_new=row['post_rank_new'],
+        start_date=row['start_date'],
+        end_date=row['end_date'],
+    )
+
+    assert pd.read_sql_query(
+        sql=update_appointments_count_snippet,
+        con=connection,
+    ).iloc[0] == 1, (
+        f"Expected 1 record to be affected, but {update_appointments_count_snippet} "
+        f"affected {
+            pd.read_sql_query(sql=update_appointments_count_snippet, con=connection).iloc[0, 0]
+        } records"
+    )
+
+    # Produce code
     update_appointments_snippet = update_appointment.format(
         person_name=row['person_name'],
         post_name_old=row['post_name_old'],
