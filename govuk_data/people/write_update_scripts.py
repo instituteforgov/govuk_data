@@ -80,6 +80,15 @@ df_appointments_to_edit = pd.read_sql_query(
 )
 
 # %%
+# Escape single quotes in person names
+df_appointments_to_edit['person_name'] = df_appointments_to_edit[
+    'person_name'
+].str.replace("'", "''")
+df_appointments_to_edit['person_name'] = df_appointments_to_edit[
+    'person_name'
+].str.replace("'", "''")
+
+# %%
 # Escape single quotes in post names
 df_posts_to_add['post_name'] = df_posts_to_add[
     'post_name'
@@ -164,15 +173,15 @@ for index, row in df_appointments_to_edit.iterrows():
         end_date=row['end_date'],
     )
 
-    # assert pd.read_sql_query(
-    #     sql=update_appointments_count_snippet,
-    #     con=connection,
-    # ).iloc[0, 0] == 1, (
-    #     f"Expected 1 record to be affected, but {update_appointments_count_snippet} "
-    #     f"affected {
-    #         pd.read_sql_query(sql=update_appointments_count_snippet, con=connection).iloc[0, 0]
-    #     } records"
-    # )
+    assert pd.read_sql_query(
+        sql=update_appointments_count_snippet,
+        con=connection,
+    ).iloc[0, 0] == 1, (
+        f"Expected 1 record to be affected, but {update_appointments_count_snippet} "
+        f"affected {
+            pd.read_sql_query(sql=update_appointments_count_snippet, con=connection).iloc[0, 0]
+        } records"
+    )
 
     # Produce code
     update_appointments_snippet = update_appointment.format(
