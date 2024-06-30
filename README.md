@@ -10,3 +10,7 @@
 | `clean_govuk_person_roles.py` | Clean GOV.UK person page data |
 | `match_govuk_appointments.py` | Read in analysis table of GOV.UK appointments and match to ministers database |
 | `personpage_reviewmatchoutput.sql` | Review output of manual review of possible matches |
+| `write_add_posts_script.py` | Write script to add new posts based on results of matching |
+| `<ministers-database>/editing_dataamendments.sql` | <Run output of write_add_posts_script.py> |
+| `write_update_appointments_script.py` | Write script to update appointment records based on results of matching |
+| `<ministers-database>/editing_dataamendments.py` | <Run output of write_update_appointments_script.py> |
