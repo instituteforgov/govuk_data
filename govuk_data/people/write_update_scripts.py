@@ -84,9 +84,6 @@ df_appointments_to_edit = pd.read_sql_query(
 df_appointments_to_edit['person_name'] = df_appointments_to_edit[
     'person_name'
 ].str.replace("'", "''")
-df_appointments_to_edit['person_name'] = df_appointments_to_edit[
-    'person_name'
-].str.replace("'", "''")
 
 # %%
 # Escape single quotes in post names
