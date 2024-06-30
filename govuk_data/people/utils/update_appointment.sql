@@ -13,13 +13,21 @@ from core.person p
     inner join core.post t2 on
         t2.name = '{post_name_new}' and
         t2.rank_equivalence = '{post_rank_new}'
-    inner join core.organisation o on
-        t1.organisation_id = o.id
+    inner join core.organisation o1 on
+        t1.organisation_id = o1.id and
+        a.start_date >= isnull(o1.start_date, '1900-01-01') and
+        a.end_date <= isnull(o1.end_date, '9999-12-31')
+    inner join core.organisation o2 on
+        t2.organisation_id = o2.id and
+        o2.name = '{organisation_name}' and
+        o2.short_name = '{organisation_short_name}' and
+        ac.start_date >= isnull(o2.start_date, '1900-01-01') and
+        ac.end_date <= isnull(o2.end_date, '9999-12-31')
 where
     p.name = '{person_name}' and
     t1.name = '{post_name_old}' and
     t1.rank_equivalence = '{post_rank_old}' and
-    o.name = '{organisation_name}' and
-    o.short_name = '{organisation_short_name}' and
-    a.start_date = '{start_date}' and
-    a.end_date = '{end_date}'
+    o1.name = '{organisation_name}' and
+    o1.short_name = '{organisation_short_name}' and
+    ac.start_date = '{start_date}' and
+    ac.end_date = '{end_date}'
