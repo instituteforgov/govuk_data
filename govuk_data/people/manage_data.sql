@@ -43,7 +43,7 @@ from analysis.[ukgovt.minister_ids_govuk_strings_20240503]
 
 
 --- QA
--- Duplicate names
+-- Duplicate IDs
 select
     s.id
 from reference.[ukgovt.govuk_strings_people] s
