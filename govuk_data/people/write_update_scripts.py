@@ -79,6 +79,18 @@ df_appointments_to_edit = pd.read_sql_query(
 )
 
 # %%
+# Escape single quotes in post names
+df_posts_to_add['post_name'] = df_posts_to_add[
+    'post_name'
+].str.replace("'", "''")
+df_appointments_to_edit['post_name_old'] = df_appointments_to_edit[
+    'post_name_old'
+].str.replace("'", "''")
+df_appointments_to_edit['post_name_new'] = df_appointments_to_edit[
+    'post_name_new'
+].str.replace("'", "''")
+
+# %%
 # PRODUCE SCRIPTS
 # Add posts
 add_posts_code = '--- SET HOLD\nset noexec on\n\n'
