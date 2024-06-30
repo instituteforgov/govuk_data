@@ -1,7 +1,8 @@
 -- Identify appointments for which we want to change the post
+-- NB: distinct is used to weed out duplicates that sometimes exist in the GOV.UK data
 -- NB: This excludes appointments in the d/b matched to more than a single appointment in the
 -- GOV.UK data - we handle these cases manually
-select
+select distinct
     w1.appointment_id_ifg appointment_id,
     w1.person_name_ifg person_name,
     w1.post_name_ifg post_name_old,
