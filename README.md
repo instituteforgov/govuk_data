@@ -10,31 +10,33 @@ This project extracts data on individuals (identifiers and details of appointmen
 ## Directory structure
 
 ```
-govuk_data/
-└── people/
-    ├── scrape_govuk_people.py
-    ├── match_govuk_people.py
-    ├── manage_data.sql
-    ├── scrape_govuk_person_pages.py
-    ├── personpage_qa.sql
-    ├── personpage_createanalysistable.sql
-    ├── clean_govuk_person_roles.py
-    ├── match_govuk_appointments.py
-    ├── personpage_reviewmatchoutput.sql
-    ├── write_add_posts_script.py
-    ├── write_update_appointments_script.py
-    ├── data/
-    │   └── df_person_page.pkl_20240503
-    └── utils/
-        ├── create_post_count.sql
-        ├── create_post.sql
-        ├── fuzzy_match.py
-        ├── identify_appointments_to_edit.sql
-        ├── identify_posts_to_add.sql
-        ├── temp.py
-        ├── update_appointment_count.sql
-        ├── update_appointment.sql
-        └── utils.py
+├── govuk_data/
+|   └── people/
+|       ├── scrape_govuk_people.py
+|       ├── match_govuk_people.py
+|       ├── manage_data.sql
+|       ├── scrape_govuk_person_pages.py
+|       ├── personpage_qa.sql
+|       ├── personpage_createanalysistable.sql
+|       ├── clean_govuk_person_roles.py
+|       ├── match_govuk_appointments.py
+|       ├── personpage_reviewmatchoutput.sql
+|       ├── write_add_posts_script.py
+|       ├── write_update_appointments_script.py
+|       ├── data/
+|       │   └── df_person_page.pkl_20240503
+|       └── utils/
+|           ├── create_post_count.sql
+|           ├── create_post.sql
+|           ├── fuzzy_match.py
+|           ├── identify_appointments_to_edit.sql
+|           ├── identify_posts_to_add.sql
+|           ├── update_appointment_count.sql
+|           ├── update_appointment.sql
+|           └── utils.py
+.gitignore
+.pre-commit-config.yaml
+README.md
 ```
 
 ## Database schemas
