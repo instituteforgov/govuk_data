@@ -27,12 +27,12 @@ import utils.utils as utils
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
     driver='pyodbc',
-    driver_version=os.environ['odbc_driver'],
+    driver_version=os.environ['ODBC_DRIVER'],
     dialect='mssql',
-    server=os.environ['odbc_server'],
-    database=os.environ['odbc_database'],
-    authentication=os.environ['odbc_authentication'],
-    username=os.environ['odbc_username'],
+    server=os.environ['ODBC_SERVER'],
+    database=os.environ['ODBC_DATABASE'],
+    authentication=os.environ['ODBC_AUTHENTICATION'],
+    username=os.environ['ODBC_USERNAME'],
 )
 
 # %%
