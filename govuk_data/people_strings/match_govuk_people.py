@@ -21,6 +21,7 @@
 '''
 
 import os
+import re
 
 from ds_utils import database_operations as dbo
 from ds_utils import string_operations as so
@@ -34,6 +35,8 @@ from govuk_data.utils.fuzzy_match import fuzzy_merge
 # %%
 # SET CONSTANTS
 DATESTAMP = '20260428'
+PREFIXES = ['The Rt Hon', 'Rt Hon', 'Sir']
+SUFFIXES = ['GBE', 'KBE', 'DBE', 'CBE', 'OBE', 'MBE', 'TD', 'KC', 'QC', 'MP']
 
 # %%
 # CONNECT TO D/B
@@ -86,14 +89,28 @@ df_govuk_person['name'] = df_govuk_person['name'].apply(
     lambda x: so.strip_name_title(x, exclude_peerage=True)
 )
 
-# Strip 'The Rt Hon', 'MP' from names
-df_govuk_person['name'] = df_govuk_person['name'].replace(
-    {
-        '(The )*Rt Hon': '',
-        'MP': ''
-    },
-    regex=True
-).str.strip()
+# Strip prefixes and suffixes from names
+prefix_re = re.compile(
+    r'^(?:' + '|'.join(re.escape(p) for p in PREFIXES) + r')\s+'
+)
+suffix_re = re.compile(
+    r'\s+(?:' + '|'.join(re.escape(s) for s in SUFFIXES) + r')$'
+)
+
+
+def strip_honorifics(name: str) -> str:
+    """Remove known prefixes and suffixes, repeating until none remain."""
+    if not isinstance(name, str):
+        return name
+    prev = None
+    while prev != name:
+        prev = name
+        name = prefix_re.sub('', name)
+        name = suffix_re.sub('', name)
+    return name.strip()
+
+
+df_govuk_person['name'] = df_govuk_person['name'].apply(strip_honorifics)
 
 # %%
 # FUZZY MATCH
