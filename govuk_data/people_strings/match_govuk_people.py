@@ -126,7 +126,8 @@ df_match[[
     'Replacement name',
     'Replacement govuk_string',
 ]].to_excel(
-    f'govuk_data/people_strings/data/match_{DATESTAMP}.xlsx'
+    f'govuk_data/people_strings/data/match_{DATESTAMP}.xlsx',
+    merge_cells=False
 )
 
 # %%
