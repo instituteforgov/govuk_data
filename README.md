@@ -90,7 +90,8 @@ The following environment variables must be set before running any scripts:
 | `ODBC_SERVER` | SQL Server hostname |
 | `ODBC_DATABASE` | Database name |
 | `ODBC_AUTHENTICATION` | Authentication method |
-| `ODBC_USERNAME` | Database username |
+| `AZURE_CLIENT_ID` | Azure service principal client ID used for database authentication |
+| `AZURE_CLIENT_SECRET` | Azure service principal client secret used for database authentication |
 
 ## Contributing
 

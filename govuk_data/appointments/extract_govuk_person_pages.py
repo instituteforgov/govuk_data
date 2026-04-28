@@ -51,7 +51,8 @@ connection = dbo.connect_sql_db(
     server=os.environ['ODBC_SERVER'],
     database=os.environ['ODBC_DATABASE'],
     authentication=os.environ['ODBC_AUTHENTICATION'],
-    username=os.environ['ODBC_USERNAME'],
+    username=os.environ["AZURE_CLIENT_ID"],
+    password=os.environ["AZURE_CLIENT_SECRET"],
 )
 
 # %%
