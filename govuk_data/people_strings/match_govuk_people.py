@@ -15,7 +15,9 @@
     Parameters
         None
     Notes
-        None
+        - Needs to be run in two stages:
+            - 1. Up to the stage where fuzzy match results are exported using to_excel()
+            - 2. From ingesting the results of manual review of the matches onwards
 '''
 
 import os
