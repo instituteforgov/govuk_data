@@ -56,7 +56,9 @@ connection = dbo.connect_sql_db(
 # NB: This includes a row for every record in core.person - so where someone's person record is split across two records (e.g. because they've changed name), the table we use as the basis for matching will include both records
 df_ifg_minister = pd.read_sql_query(
     '''
-    select *
+    select
+        p.*,
+        row_number() over (partition by p.id order by p.start_date desc) rn_df_left
     from core.person p
     where
         exists (
@@ -115,6 +117,7 @@ df_match["Replacement name"] = None
 df_match["Replacement govuk_string"] = None
 
 df_match[[
+    'rn_df_left',
     'match_score',
     'name_df_left',
     'name_df_right',
