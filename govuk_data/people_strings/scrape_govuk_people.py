@@ -4,11 +4,12 @@
 
 '''
     Purpose
-        Scrape gov.uk people strings (e.g. matthew-hancock) and save them to SQL
+        Scrape GOV.UK people strings (e.g. matthew-hancock) from GOV.UK and save
+        them to SQL
     Inputs
-        - Web: gov.uk pages
+        - Web: https://www.gov.uk/government/people (paginated)
     Outputs
-        - SQL: source.ukgovt.govuk_strings_people_20240503
+        - SQL: source.[ukgovt.govuk_strings_people_<datestamp>]
     Parameters
         - base_url: Base URL for scraping
     Notes
@@ -21,11 +22,10 @@ import uuid
 import urllib
 
 from bs4 import BeautifulSoup
+from ds_utils import database_operations as dbo
 import pandas as pd
 import sqlalchemy
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-
-from ds_utils import database_operations as dbo
 
 # %%
 # CONNECT TO D/B

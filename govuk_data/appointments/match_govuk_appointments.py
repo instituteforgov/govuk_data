@@ -4,17 +4,20 @@
 
 '''
     Purpose
-        Read in analysis table of GOV.UK appointments and match to ministers
-        database
+        Match GOV.UK appointments to ministers database appointments, scoring
+        each candidate pair on organisation name, post name (fuzzy) and date
+        proximity, and auto-accepting high-confidence matches
     Inputs
-        - SQL: from analysis.[ukgovt.minister_govuk_people_page_content_20240503]
+        - SQL: analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]
         - SQL: core.person
         - SQL: core.appointment
         - SQL: core.appointment_characteristics
         - SQL: core.post
         - SQL: core.organisation
     Outputs
-        - SQL: workflow.<uuid>
+        - SQL: workflow.<uuid>  (UUID printed to console; must be substituted manually
+          into personpage_reviewmatchoutput.sql, write_add_posts_script.py and
+          write_update_appointments_script.py)
     Parameters
         None
     Notes

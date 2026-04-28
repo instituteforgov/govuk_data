@@ -1,3 +1,23 @@
+/***************************************************************************************************************************************************************************
+    Purpose
+      - Create analysis table of GOV.UK person page data from the source table
+      - Applies filtering (non-ministerial roles, Welsh-locale duplicates, excluded
+        posts), drops very short appointments, and applies one-off post name fixes
+      - Adds blank columns (post_name_clean, post_rank, organisation_name_clean, etc.)
+        to be populated by clean_govuk_person_roles.py
+    Inputs
+      - SQL: source.[ukgovt.minister_govuk_people_page_content_20240503]
+    Outputs
+      - SQL: analysis.[ukgovt.minister_govuk_people_page_content_20240503]
+    Parameters
+      None
+    Notes
+      - Run after personpage_qa_source.sql
+      - Run before personpage_qa_analysis.sql and clean_govuk_person_roles.py
+***************************************************************************************************************************************************************************/
+
+
+
 --- SET HOLD
 set noexec on
 

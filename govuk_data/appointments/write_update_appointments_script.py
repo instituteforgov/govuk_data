@@ -4,15 +4,16 @@
 
 '''
     Purpose
-        Write script to update appointment records based on
+        Write script to update post IDs on core.appointment records based on
         results of matching
     Inputs
         - SQL: workflow.<uuid>
-        - script: 'utils/identify_appointments_to_edit.sql'
-        - script: 'utils/update_appointment.sql'
-        - script: 'utils/update_appointment_count.sql'
+        - script: utils/identify_appointments_to_edit.sql
+        - script: utils/update_appointment_count.sql
+        - script: utils/update_appointment.sql
     Outputs
-        None
+        - stdout: SQL update script for core.appointment records (copy and run manually
+          in the ministers database)
     Parameters
         None
     Notes

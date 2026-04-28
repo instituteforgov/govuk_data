@@ -4,17 +4,17 @@
 
 '''
     Purpose
-        Read in post-2010 ministers and gov.uk people strings, fuzzy match
+        Read in post-2010 ministers and GOV.UK people strings, fuzzy match
         and manual match and save to SQL
     Inputs
         - SQL: core.person
         - SQL: core.appointment
         - SQL: reference.[ukgovt.govuk_strings_people]
-        - SQL: source.[ukgovt.govuk_strings_people_20240503]
-        - Excel: data/match_20240503.xlsx
+        - SQL: source.[ukgovt.govuk_strings_people_<datestamp>]
+        - Excel: data/match_<datestamp>.xlsx
     Outputs
-        - Excel: data/match_20240503.xlsx
-        - SQL: analysis.[ukgovt.minister_ids_govuk_strings_20240503]
+        - Excel: data/match_<datestamp>.xlsx
+        - SQL: analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]
     Parameters
         None
     Notes
@@ -23,13 +23,13 @@
 
 import os
 
+from ds_utils import database_operations as dbo
+from ds_utils import string_operations as so
 import pandas as pd
 import pandas.io.formats.excel
 import sqlalchemy
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 
-from ds_utils import database_operations as dbo
-from ds_utils import string_operations as so
 from utils.fuzzy_match import fuzzy_merge
 
 # %%
@@ -69,7 +69,7 @@ df_ifg_minister = pd.read_sql_query(
     index_col='id'
 )
 
-# List of gov.uk identifiers
+# List of GOV.UK identifiers
 df_govuk_person = pd.read_sql_table(
     'ukgovt.govuk_strings_people_20240503',
     schema='source',

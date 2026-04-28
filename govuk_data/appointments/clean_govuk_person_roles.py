@@ -4,15 +4,19 @@
 
 '''
     Purpose
-        Clean GOV.UK person page data
+        Clean post name data in the GOV.UK person page analysis table
     Inputs
-        - SQL: analysis.ukgovt.minister_govuk_people_page_content_20240503
+        - SQL: analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]
     Outputs
-        - SQL: analysis.ukgovt.minister_govuk_people_page_content_20240503
+        - SQL: analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]
+          (overwrites the same table in place)
     Parameters
         None
     Notes
-        None
+        - Cleaning applied: ampersand replacement, identification of ministers on leave
+          or acting, removal of joint post names, handling of Parliamentary Secretary post
+          names, standardisation of MoS/PUSS post names, removal of Lords minister post names
+        - Run after personpage_createanalysistable.sql
 '''
 
 import os

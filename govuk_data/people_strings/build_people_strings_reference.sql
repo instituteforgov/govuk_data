@@ -1,11 +1,9 @@
 /***************************************************************************************************************************************************************************
     Purpose
-      - Create reference table of gov.uk people strings
+      - Create reference table of GOV.UK people strings
       - QA reference table
     Inputs
-      - SQL: analysis.[ukgovt.minister_ids_govuk_strings_20211009]
-      - SQL: analysis.[ukgovt.minister_ids_govuk_strings_202200702]
-      - SQL: analysis.[ukgovt.minister_ids_govuk_strings_20240503]
+      - SQL: analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]  (one per run; union all)
     Outputs
       - SQL: reference.[ukgovt.govuk_strings_people]
     Parameters
@@ -63,7 +61,7 @@ having
     count(1) > 1
 
 
--- Duplicate gov.uk strings
+-- Duplicate GOV.UK strings
 select
     s.govuk_string
 from reference.[ukgovt.govuk_strings_people] s

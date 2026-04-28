@@ -4,14 +4,15 @@
 
 '''
     Purpose
-        Write script to add new posts based on results of matching
+        Write script to add new posts to core.post based on results of matching
     Inputs
         - SQL: workflow.<uuid>
-        - script: 'utils/identify_posts_to_add.sql'
-        - script: 'utils/create_post_count.sql'
-        - script: 'utils/create_post.sql'
+        - script: utils/identify_posts_to_add.sql
+        - script: utils/create_post_count.sql
+        - script: utils/create_post.sql
     Outputs
-        None
+        - stdout: SQL insert script for new core.post records (copy and run manually
+          in the ministers database)
     Parameters
         None
     Notes

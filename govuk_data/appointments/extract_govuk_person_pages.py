@@ -4,13 +4,14 @@
 
 '''
     Purpose
-        Read in gov.uk person page data from API endpoint
+        Extract GOV.UK person page data from the GOV.UK Content API and save to
+        SQL
     Inputs
-        - SQL: reference.[ukgovt.minister_ids_govuk_strings]
+        - SQL: reference.[ukgovt.govuk_strings_people]
         - API: https://www.gov.uk/api/content/government/people/<person_string>
     Outputs
-        - pkl: data/df_person_page.pkl_20240503
-        - SQL: source.ukgovt.minister_govuk_people_page_content_20240503
+        - pkl: data/df_person_page.pkl_<datestamp>
+        - SQL: source.[ukgovt.minister_govuk_people_page_content_<datestamp>]
     Parameters
         - base_url: Base URL for API request
         - headers: Headers for API request
@@ -20,7 +21,7 @@
         None
     Future enhancements
         - Add handling for rate limiting https://content-api.publishing.service.gov.uk/#rate-limiting       # noqa: E501
-            - NB: Hasn't been a problem so far, scraping ~400 pages without adding a delay between
+            - NB: Hasn't been a problem so far, extracting ~400 pages without adding a delay between
             requests
         - Save page json to Azure Blob Storage
 '''
@@ -28,14 +29,13 @@
 import os
 from uuid import uuid4
 
+from ds_utils import database_operations as dbo
+from ds_utils import dataframe_operations as dfo
 import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from urllib3.util.retry import Retry
-
-from ds_utils import database_operations as dbo
-from ds_utils import dataframe_operations as dfo
 
 # %%
 # SET PARAMETERS
