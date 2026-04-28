@@ -9,6 +9,10 @@
         - SQL: reference.[ukgovt.govuk_strings_people]
         - SQL: source.[ukgovt.govuk_strings_people_<datestamp>]
         - Excel: govuk_data/people_strings/data/match_<datestamp>.xlsx
+            - The output table of fuzzy matches, with manual review columns filled in as follows:
+                - 'Accept': 'Y' for accepted matches, 'N' for rejected matches
+                - 'Replacement name': The actual name of the individual, rather than the suggested match, where we wish to supply an alternative. (NB: This is likely to match name_df_left)
+                - 'Replacement govuk_string': The actual GOV.UK string for the individual, rather than the suggested match, where we wish to supply an alternative
     Outputs
         - Excel: govuk_data/people_strings/data/match_<datestamp>.xlsx
         - SQL: analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]
@@ -106,11 +110,18 @@ df_match = mo.fuzzy_merge(
 # EXPORT THE TABLE OF MATCHES, FOR MANUAL QA
 pandas.io.formats.excel.ExcelFormatter.header_style = None
 
+df_match["Accept"] = None
+df_match["Replacement name"] = None
+df_match["Replacement govuk_string"] = None
+
 df_match[[
     'match_score',
     'name_df_left',
     'name_df_right',
     'govuk_string',
+    'Accept',
+    'Replacement name',
+    'Replacement govuk_string',
 ]].to_excel(
     f'govuk_data/people_strings/data/match_{DATESTAMP}.xlsx'
 )
