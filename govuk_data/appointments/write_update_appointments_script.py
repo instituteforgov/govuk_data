@@ -20,9 +20,8 @@
 import datetime
 import os
 
-import pandas as pd
-
 from ds_utils import database_operations as dbo
+import pandas as pd
 
 # %%
 # CONNECT TO D/B

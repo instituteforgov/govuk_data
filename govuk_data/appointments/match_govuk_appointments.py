@@ -32,11 +32,10 @@
 import os
 import uuid
 
+from ds_utils import database_operations as dbo
 import pandas as pd
 from rapidfuzz import fuzz
 from sqlalchemy.dialects.mssql import BIT, DATE, FLOAT, NVARCHAR, UNIQUEIDENTIFIER
-
-from ds_utils import database_operations as dbo
 
 # %%
 # SET CONSTANTS
