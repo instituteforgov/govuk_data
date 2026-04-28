@@ -35,7 +35,8 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from urllib3.util.retry import Retry
 
 # %%
-# SET PARAMETERS
+# SET CONSTANTS
+DATESTAMP = '20240503'
 base_url = 'https://www.gov.uk/api/content/government/people/'
 headers = {'Accept': 'application/json'}
 connection_retries = 5
@@ -99,7 +100,7 @@ assert df_person_page.shape[0] == df_ifg_minister.shape[0], \
 
 # %%
 # SAVE TO PICKLE
-df_person_page.to_pickle('data/df_person_page.pkl_20240503')
+df_person_page.to_pickle(f'data/df_person_page.pkl_{DATESTAMP}')
 
 # %%
 # EDIT DATA
@@ -125,7 +126,7 @@ df_person_page_flat = df_person_page_flat.map(
 # %%
 # SAVE TO SQL
 df_person_page_flat.to_sql(
-    'ukgovt.minister_govuk_people_page_content_20240503',
+    f'ukgovt.minister_govuk_people_page_content_{DATESTAMP}',
     schema='source',
     con=connection,
     dtype={

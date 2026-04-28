@@ -39,6 +39,10 @@ from sqlalchemy.dialects.mssql import BIT, DATE, FLOAT, NVARCHAR, UNIQUEIDENTIFI
 from ds_utils import database_operations as dbo
 
 # %%
+# SET CONSTANTS
+DATESTAMP = '20240503'
+
+# %%
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
     driver='pyodbc',
@@ -93,7 +97,7 @@ df_ifg_appt = pd.read_sql_query(
 )
 
 df_govuk_appt = pd.read_sql_query(
-    """
+    f"""
     select
         g.appointment_id_govuk appointment_id,
         g.person_id,
@@ -107,7 +111,7 @@ df_govuk_appt = pd.read_sql_query(
         g.organisation_short_name_clean organisation_short_name,
         g.appointment_start_date start_date,
         g.appointment_end_date end_date
-    from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
+    from [analysis].[ukgovt.minister_govuk_people_page_content_{DATESTAMP}] g
     """,
     con=connection,
 )

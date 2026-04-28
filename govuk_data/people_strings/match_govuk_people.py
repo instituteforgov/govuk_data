@@ -30,6 +30,10 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from utils.fuzzy_match import fuzzy_merge
 
 # %%
+# SET CONSTANTS
+DATESTAMP = '20240503'
+
+# %%
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
     driver='pyodbc',
@@ -68,7 +72,7 @@ df_ifg_minister = pd.read_sql_query(
 
 # List of GOV.UK identifiers
 df_govuk_person = pd.read_sql_table(
-    'ukgovt.govuk_strings_people_20240503',
+    f'ukgovt.govuk_strings_people_{DATESTAMP}',
     schema='source',
     con=connection
 )
@@ -110,13 +114,13 @@ df_match[[
     'name_df_right',
     'govuk_string',
 ]].to_excel(
-    'data/match_20240503.xlsx'
+    f'data/match_{DATESTAMP}.xlsx'
 )
 
 # %%
 # INGEST REVIEWED MATCHES
 df_reviewed = pd.read_excel(
-    'data/match_20240503.xlsx',
+    f'data/match_{DATESTAMP}.xlsx',
     index_col=None
 )
 
@@ -164,7 +168,7 @@ df_reviewed[[
         'name_df_left': 'name'
     }
 ).to_sql(
-    'ukgovt.minister_ids_govuk_strings_20240503',
+    f'ukgovt.minister_ids_govuk_strings_{DATESTAMP}',
     schema='analysis',
     con=connection,
     dtype={

@@ -25,6 +25,10 @@ from ds_utils import database_operations as dbo
 import utils.utils as utils
 
 # %%
+# SET CONSTANTS
+DATESTAMP = '20240503'
+
+# %%
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
     driver='pyodbc',
@@ -39,9 +43,9 @@ connection = dbo.connect_sql_db(
 # %%
 # READ IN ANALYSIS TABLE
 df = pd.read_sql_query(
-    '''
+    f'''
     select *
-    from [analysis].[ukgovt.minister_govuk_people_page_content_20240503]
+    from [analysis].[ukgovt.minister_govuk_people_page_content_{DATESTAMP}]
     ''',
     con=connection
 )
@@ -84,7 +88,7 @@ df[['post_name_clean', 'post_rank']] = pd.DataFrame(
 
 # %%
 df.to_sql(
-    'ukgovt.minister_govuk_people_page_content_20240503',
+    f'ukgovt.minister_govuk_people_page_content_{DATESTAMP}',
     schema='analysis',
     con=connection,
     dtype={

@@ -25,6 +25,10 @@ import sqlalchemy
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 
 # %%
+# SET CONSTANTS
+DATESTAMP = '20240503'
+
+# %%
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
     driver='pyodbc',
@@ -95,7 +99,7 @@ max_govuk_string_length = df_govuk_person['govuk_string'].str.len().max()
 # %%
 # Save data
 df_govuk_person[['id', 'name', 'govuk_string']].to_sql(
-    'ukgovt.govuk_strings_people_20240503',
+    f'ukgovt.govuk_strings_people_{DATESTAMP}',
     schema='source',
     con=connection,
     dtype={
