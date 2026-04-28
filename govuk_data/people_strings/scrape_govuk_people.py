@@ -14,15 +14,15 @@
 '''
 
 import os
-import requests
 import uuid
-import urllib
 
 from bs4 import BeautifulSoup
 from ds_utils import database_operations as dbo
 import pandas as pd
+import requests
 import sqlalchemy
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+import urllib
 
 # %%
 # SET CONSTANTS
