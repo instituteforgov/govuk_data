@@ -25,7 +25,6 @@ import re
 
 from ds_utils import matching_operations as mo
 from ds_utils import database_operations as dbo
-from ds_utils import string_operations as so
 import pandas as pd
 import pandas.io.formats.excel
 import sqlalchemy
@@ -34,7 +33,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 # %%
 # SET CONSTANTS
 DATESTAMP = '20260428'
-PREFIXES = ['The Rt Hon', 'Rt Hon', 'Sir']
+PREFIXES = ['The Rt Hon', 'Rt Hon', 'Rev Dr', 'Lt Col', 'Reverend', 'Dame', 'Miss', 'Prof', 'Sir', 'The', 'Dr', 'Hon', 'Mrs', 'Rev', 'Mr', 'Ms']
 SUFFIXES = ['GBE', 'KBE', 'DBE', 'CBE', 'OBE', 'MBE', 'TD', 'KC', 'QC', 'MP']
 
 # %%
@@ -88,11 +87,6 @@ df_govuk_person = pd.read_sql_table(
 # Set index
 df_govuk_person.set_index('id', inplace=True)
 
-# Strip titles from names
-df_govuk_person['name'] = df_govuk_person['name'].apply(
-    lambda x: so.strip_name_title(x, exclude_peerage=True)
-)
-
 # Strip prefixes and suffixes from names
 prefix_re = re.compile(
     r'^(?:' + '|'.join(re.escape(p) for p in PREFIXES) + r')\s+'
@@ -111,7 +105,7 @@ def strip_honorifics(name: str) -> str:
         prev = name
         name = prefix_re.sub('', name)
         name = suffix_re.sub('', name)
-    return name.strip()
+    return ' '.join(name.split())
 
 
 df_govuk_person['name'] = df_govuk_person['name'].apply(strip_honorifics)
