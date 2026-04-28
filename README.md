@@ -4,10 +4,10 @@ This project extracts data on individuals (identifiers and details of appointmen
 
 ## Related repositories
 
-- [IfG Ministers Database - private repo](https://github.com/instituteforgov/ifg-ministers-database-private/): Holds the majority of code and resources for the IfG Ministers Database project (held privately)
-- [IfG Ministers Database - public repo](https://github.com/instituteforgov/ifg-ministers-database-public/): The public part of the IfG Ministers Database project
+- 🔒 [IfG Ministers Database - private repo](https://github.com/instituteforgov/ifg-ministers-database-private/): Holds the majority of code and resources for the IfG Ministers Database project (held privately). Appointment information collated in this repo is matched to IfG Ministers Database appointments data and scripts generated to update the data held in the database
+- 🔓 [IfG Ministers Database - public repo](https://github.com/instituteforgov/ifg-ministers-database-public/): The public part of the IfG Ministers Database project
 
-## Directory structure
+## Project structure
 
 ```
 ├── govuk_data/
@@ -66,7 +66,7 @@ Run once per data pull to build up the `reference.[ukgovt.govuk_strings_people]`
 
 ## Appointments pipeline
 
-Run once per data pull to match GOV.UK appointment records to the ministers database and generate SQL scripts to update it.
+Run once per data pull to match GOV.UK appointment records to the IfG Ministers Database and generate SQL scripts to update it.
 
 | Step | Script | Inputs | Outputs |
 | --- | --- | --- | --- |
@@ -77,9 +77,8 @@ Run once per data pull to match GOV.UK appointment records to the ministers data
 | 5 | `clean_govuk_person_roles.py` | `analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]` | `analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]` *(updated in place)* |
 | 6 | `match_govuk_appointments.py` | <ul><li>`analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]`</li><li>`core.person`</li><li>`core.appointment`</li><li>`core.appointment_characteristics`</li><li>`core.post`</li><li>`core.organisation`</li></ul> | `workflow.<uuid>` *(UUID printed to console — substitute into steps 7–9)* |
 | 7 | `personpage_reviewmatchoutput.sql` | `workflow.<uuid>` | *(manual review — no outputs; update `reviewed`/`match_accepted`/`replace_post_name` flags in the workflow table)* |
-| 8 | `write_add_posts_script.py` | `workflow.<uuid>` (via `utils/identify_posts_to_add.sql`) | stdout: SQL to insert new records into `core.post` — **copy and run manually in the ministers database** |
-| 9 | `write_update_appointments_script.py` | `workflow.<uuid>` (via `utils/identify_appointments_to_edit.sql`) | stdout: SQL to update `core.appointment` post IDs — **copy and run manually in the ministers database** |
-
+| 8 | `write_add_posts_script.py` | `workflow.<uuid>` (via `utils/identify_posts_to_add.sql`) | stdout: SQL to insert new records into `core.post` — **copy and run manually in the IfG Ministers Database** |
+| 9 | `write_update_appointments_script.py` | `workflow.<uuid>` (via `utils/identify_appointments_to_edit.sql`) | stdout: SQL to update `core.appointment` post IDs — **copy and run manually in the IfG Ministers Database** |
 
 ## Environment variables
 
@@ -92,3 +91,22 @@ The following environment variables must be set before running any scripts:
 | `ODBC_DATABASE` | Database name |
 | `ODBC_AUTHENTICATION` | Authentication method |
 | `ODBC_USERNAME` | Database username |
+
+## Contributing
+
+This project uses `pre-commit` hooks to ensure code quality. To set up:
+ 
+1. Install `pre-commit` on your system if you don't already have it:
+ 
+    ```bash
+    pip install pre-commit
+    ```
+ 
+1. Set up `pre-commit` in your copy of this project. In the project directory, run:
+    ```bash
+    pre-commit install
+    ```
+ 
+Rules that are applied can be found in [`.pre-commit-config.yaml`](.pre-commit-config.yaml).
+ 
+The hooks run automatically on commit, or manually with `pre-commit run --all-files`.
