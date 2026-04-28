@@ -11,8 +11,11 @@
         - Excel: govuk_data/people_strings/data/match_<datestamp>.xlsx
             - The output table of fuzzy matches, with manual review columns filled in as follows:
                 - 'Accept': 'Y' for accepted matches, 'N' for rejected matches
-                - 'Replacement name': The actual name of the individual, rather than the suggested match, where we wish to supply an alternative. (NB: This is likely to match name_df_left)
+                - 'Replacement name': The actual name of the individual, rather than the suggested match, where we wish to supply an alternative
+                    - NB: This is likely to match name_df_left
+                    - NB: Where a row is the second (or subsequent) record for a given individual, this should be left blank
                 - 'Replacement govuk_string': The actual GOV.UK string for the individual, rather than the suggested match, where we wish to supply an alternative
+                    - NB: Where a row is the second (or subsequent) record for a given individual, this should be left blank
     Outputs
         - Excel: govuk_data/people_strings/data/match_<datestamp>.xlsx
         - SQL: analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]
@@ -56,9 +59,7 @@ connection = dbo.connect_sql_db(
 # NB: This includes a row for every record in core.person - so where someone's person record is split across two records (e.g. because they've changed name), the table we use as the basis for matching will include both records
 df_ifg_minister = pd.read_sql_query(
     '''
-    select
-        p.*,
-        row_number() over (partition by p.id order by p.start_date desc) rn_df_left
+    select *
     from core.person p
     where
         exists (
@@ -108,6 +109,16 @@ df_match = mo.fuzzy_merge(
     drop_cols=None
 )
 
+# Rank matches by score for each left record
+df_match['duplicate_flag_df_left'] = (
+    df_match.groupby(level='df_left_id')['match_score']
+    .rank(method='first', ascending=False)
+    .astype(int)
+)
+
+# Order by df_left_id and duplicate_flag_df_left
+df_match.sort_values(['df_left_id', 'duplicate_flag_df_left'], inplace=True)
+
 # %%
 # EXPORT THE TABLE OF MATCHES, FOR MANUAL QA
 pandas.io.formats.excel.ExcelFormatter.header_style = None
@@ -117,7 +128,7 @@ df_match["Replacement name"] = None
 df_match["Replacement govuk_string"] = None
 
 df_match[[
-    'rn_df_left',
+    'duplicate_flag_df_left',
     'match_score',
     'name_df_left',
     'name_df_right',
