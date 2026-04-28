@@ -60,7 +60,7 @@ df_ifg_minister = pd.read_sql_query(
             from core.appointment a
             where
                 p.id = a.person_id and
-                a.end_date > '2010-05-06'
+                a.end_date > '2010-05-11'
         ) and
         not exists (
             select *
