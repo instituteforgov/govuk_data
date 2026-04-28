@@ -8,9 +8,9 @@
         - SQL: core.appointment
         - SQL: reference.[ukgovt.govuk_strings_people]
         - SQL: source.[ukgovt.govuk_strings_people_<datestamp>]
-        - Excel: data/match_<datestamp>.xlsx
+        - Excel: govuk_data/people_strings/data/match_<datestamp>.xlsx
     Outputs
-        - Excel: data/match_<datestamp>.xlsx
+        - Excel: govuk_data/people_strings/data/match_<datestamp>.xlsx
         - SQL: analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]
     Parameters
         None
@@ -29,7 +29,7 @@ import pandas.io.formats.excel
 import sqlalchemy
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 
-from utils.fuzzy_match import fuzzy_merge
+from govuk_data.utils.fuzzy_match import fuzzy_merge
 
 # %%
 # SET CONSTANTS
@@ -117,13 +117,13 @@ df_match[[
     'name_df_right',
     'govuk_string',
 ]].to_excel(
-    f'data/match_{DATESTAMP}.xlsx'
+    f'govuk_data/people_strings/data/match_{DATESTAMP}.xlsx'
 )
 
 # %%
 # INGEST REVIEWED MATCHES
 df_reviewed = pd.read_excel(
-    f'data/match_{DATESTAMP}.xlsx',
+    f'govuk_data/people_strings/data/match_{DATESTAMP}.xlsx',
     index_col=None
 )
 
