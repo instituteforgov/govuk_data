@@ -11,19 +11,13 @@ This project extracts data on individuals (identifiers and details of appointmen
 
 ```
 ├── govuk_data/
-|   ├── people_strings/
-|   |   ├── scrape_govuk_people.py
-|   |   ├── match_govuk_people.py
-|   |   ├── build_people_strings_reference.sql
-|   |   └── data/
-|   |       └── match_<datestamp>.xlsx
 |   ├── appointments/
+|   |   ├── clean_govuk_person_roles.py
 |   |   ├── extract_govuk_person_pages.py
-|   |   ├── personpage_qa_source.sql
+|   |   ├── match_govuk_appointments.py
 |   |   ├── personpage_createanalysistable.sql
 |   |   ├── personpage_qa_analysis.sql
-|   |   ├── clean_govuk_person_roles.py
-|   |   ├── match_govuk_appointments.py
+|   |   ├── personpage_qa_source.sql
 |   |   ├── personpage_reviewmatchoutput.sql
 |   |   ├── write_add_posts_script.py
 |   |   ├── write_update_appointments_script.py
@@ -37,6 +31,12 @@ This project extracts data on individuals (identifiers and details of appointmen
 |   |       ├── update_appointment_count.sql
 |   |       ├── update_appointment.sql
 |   |       └── utils.py
+|   ├── people_strings/
+|   |   ├── build_people_strings_reference.sql
+|   |   ├── match_govuk_people.py
+|   |   ├── scrape_govuk_people.py
+|   |   └── data/
+|   |       └── match_<datestamp>.xlsx
 |   └── utils/
 |       └── fuzzy_match.py
 .gitignore
