@@ -75,7 +75,7 @@ df_govuk_person = pd.DataFrame(rows_list)
 # RUN CHECKS
 # Check that IDs and URLs contain unique values
 # NB: The same will not be true of names - there are both legitimate and erroneous duplicates
-assert df_govuk_person['id'].nunique() == df_govuk_person.shape[0]
+assert df_govuk_person['govuk_ga_id'].nunique() == df_govuk_person.shape[0]
 assert df_govuk_person['href'].nunique() == df_govuk_person.shape[0]
 
 # %%
