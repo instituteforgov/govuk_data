@@ -26,7 +26,7 @@ from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 
 # %%
 # SET CONSTANTS
-DATESTAMP = '20240503'
+DATESTAMP = '20260428'
 
 # %%
 # CONNECT TO D/B

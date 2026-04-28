@@ -36,7 +36,7 @@ from urllib3.util.retry import Retry
 
 # %%
 # SET CONSTANTS
-DATESTAMP = '20240503'
+DATESTAMP = '20260428'
 BASE_URL = 'https://www.gov.uk/api/content/government/people/'
 HEADERS = {'Accept': 'application/json'}
 CONNECTION_RETRIES = 5
