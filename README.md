@@ -32,13 +32,11 @@ This project extracts data on individuals (identifiers and details of appointmen
 |   |       ├── update_appointment.sql
 |   |       └── utils.py
 |   ├── people_strings/
-|   |   ├── build_people_strings_reference.sql
-|   |   ├── match_govuk_people.py
-|   |   ├── scrape_govuk_people.py
-|   |   └── data/
-|   |       └── match_<datestamp>.xlsx
-|   └── utils/
-|       └── fuzzy_match.py
+|       ├── build_people_strings_reference.sql
+|       ├── match_govuk_people.py
+|       ├── scrape_govuk_people.py
+|       └── data/
+|           └── match_<datestamp>.xlsx
 .gitignore
 .pre-commit-config.yaml
 README.md

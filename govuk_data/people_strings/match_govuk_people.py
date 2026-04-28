@@ -23,14 +23,13 @@
 import os
 import re
 
+from ds_utils import matching_operations as mo
 from ds_utils import database_operations as dbo
 from ds_utils import string_operations as so
 import pandas as pd
 import pandas.io.formats.excel
 import sqlalchemy
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
-
-from govuk_data.utils.fuzzy_match import fuzzy_merge
 
 # %%
 # SET CONSTANTS
@@ -53,6 +52,7 @@ connection = dbo.connect_sql_db(
 
 # %%
 # READ IN DATA FOR MATCHING
+# NB: This includes a row for every record in core.person - so where someone's person record is split across two records (e.g. because they've changed name), the table we use as the basis for matching will include both records
 df_ifg_minister = pd.read_sql_query(
     '''
     select *
@@ -114,7 +114,7 @@ df_govuk_person['name'] = df_govuk_person['name'].apply(strip_honorifics)
 
 # %%
 # FUZZY MATCH
-df_match = fuzzy_merge(
+df_match = mo.fuzzy_merge(
     df_ifg_minister,
     df_govuk_person,
     column_left='name',
