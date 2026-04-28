@@ -1,7 +1,4 @@
 # %%
-# #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 '''
     Purpose
         Read in post-2010 ministers and GOV.UK people strings, fuzzy match

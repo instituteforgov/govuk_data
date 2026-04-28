@@ -1,7 +1,4 @@
 # %%
-# #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 '''
     Purpose
         Extract GOV.UK person page data from the GOV.UK Content API and save to

@@ -1,7 +1,4 @@
 # %%
-# #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 '''
     Purpose
         Clean post name data in the GOV.UK person page analysis table

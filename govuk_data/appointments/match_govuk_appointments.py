@@ -1,7 +1,4 @@
 # %%
-# #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 '''
     Purpose
         Match GOV.UK appointments to ministers database appointments, scoring

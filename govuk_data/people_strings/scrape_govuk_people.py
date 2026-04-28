@@ -1,7 +1,4 @@
 # %%
-# #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 '''
     Purpose
         Scrape GOV.UK people strings (e.g. matthew-hancock) from GOV.UK and save
