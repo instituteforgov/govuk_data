@@ -37,10 +37,10 @@ from urllib3.util.retry import Retry
 # %%
 # SET CONSTANTS
 DATESTAMP = '20240503'
-base_url = 'https://www.gov.uk/api/content/government/people/'
-headers = {'Accept': 'application/json'}
-connection_retries = 5
-backoff_factor = 0.5
+BASE_URL = 'https://www.gov.uk/api/content/government/people/'
+HEADERS = {'Accept': 'application/json'}
+CONNECTION_RETRIES = 5
+BACKOFF_FACTOR = 0.5
 
 # %%
 # CONNECT TO D/B
@@ -70,14 +70,14 @@ df_ifg_minister = pd.read_sql_query(
 row_list = []
 
 session = requests.Session()
-retry = Retry(connect=connection_retries, backoff_factor=backoff_factor)
+retry = Retry(connect=CONNECTION_RETRIES, backoff_factor=BACKOFF_FACTOR)
 adapter = HTTPAdapter(max_retries=retry)
 session.mount('https://', adapter)
 
 for index, row in df_ifg_minister.iterrows():
     r = session.get(
-        base_url + row['govuk_string'],
-        headers=headers
+        BASE_URL + row['govuk_string'],
+        headers=HEADERS
     )
 
     # Add ifg_id to json
