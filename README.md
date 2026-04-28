@@ -42,6 +42,12 @@ This project extracts data on individuals (identifiers and details of appointmen
 README.md
 ```
 
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Database schemas
 
 | Schema | Role |

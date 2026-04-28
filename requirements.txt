@@ -1,0 +1,7 @@
+beautifulsoup4==4.14.3
+ds_utils @ git+https://github.com/philipnye/ds_utils@d4fa3ee82cf8a3246800e1cc5b796b8aa49614f4
+pandas==3.0.2
+RapidFuzz==3.14.1
+requests==2.32.5
+SQLAlchemy==2.0.44
+urllib3==2.5.0
