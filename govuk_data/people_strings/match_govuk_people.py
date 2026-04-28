@@ -84,7 +84,11 @@ df_govuk_person = pd.read_sql_table(
 )
 
 # %%
-# CLEAN DATA
+# EDIT DATA
+# Set index
+df_govuk_person.set_index('id', inplace=True)
+
+# Strip titles from names
 df_govuk_person['name'] = df_govuk_person['name'].apply(
     lambda x: so.strip_name_title(x, exclude_peerage=True)
 )
