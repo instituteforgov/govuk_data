@@ -33,6 +33,7 @@ This project extracts data on individuals (identifiers and details of appointmen
 |   |       └── utils.py
 |   ├── people_strings/
 |       ├── build_people_strings_reference.sql
+|       ├── load_govuk_people_matches.py
 |       ├── match_govuk_people.py
 |       ├── scrape_govuk_people.py
 |       └── data/
@@ -65,8 +66,9 @@ Run once per data pull to build up the `reference.[ukgovt.govuk_strings_people]`
 | Step | Script | Inputs | Outputs |
 | --- | --- | --- | --- |
 | 1 | `scrape_govuk_people.py` | Web: gov.uk/government/people (paginated) | `source.[ukgovt.govuk_strings_people_<datestamp>]` |
-| 2 | `match_govuk_people.py` | <ul><li>`core.person`</li><li>`core.appointment`</li><li>`reference.[ukgovt.govuk_strings_people]`</li><li>`source.[ukgovt.govuk_strings_people_<datestamp>]`</li><li>`data/match_<datestamp>.xlsx` — **Following manual review**</li></ul> | <ul><li>`data/match_<datestamp>.xlsx`</li><li>`analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]`</li></ul> |
-| 3 | `build_people_strings_reference.sql` | `analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]` (one table per historical run, unioned) | `reference.[ukgovt.govuk_strings_people]` |
+| 2 | `match_govuk_people.py` | <ul><li>`core.person`</li><li>`core.appointment`</li><li>`reference.[ukgovt.govuk_strings_people]`</li><li>`source.[ukgovt.govuk_strings_people_<datestamp>]`</li></ul> | `data/match_<datestamp>.xlsx` |
+| 3 | `load_govuk_people_matches.py` | `data/match_<datestamp>.xlsx` — **following manual review** | `analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]` |
+| 4 | `build_people_strings_reference.sql` | `analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]` (one table per historical run, unioned) | `reference.[ukgovt.govuk_strings_people]` |
 
 ## Appointments pipeline
 
