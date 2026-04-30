@@ -31,7 +31,7 @@ from analysis.[ukgovt.minister_ids_govuk_strings_20211009]
 union
 
 select *
-from analysis.[ukgovt.minister_ids_govuk_strings_202200702]
+from analysis.[ukgovt.minister_ids_govuk_strings_20220702]
 
 union
 
