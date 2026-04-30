@@ -1,5 +1,5 @@
 # %%
-'''
+"""
     Purpose
         Write script to update post IDs on core.appointment records based on
         results of matching
@@ -15,7 +15,7 @@
         None
     Notes
         None
-'''
+"""
 
 import datetime
 import os
@@ -26,12 +26,12 @@ import pandas as pd
 # %%
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
-    driver='pyodbc',
-    driver_version=os.environ['ODBC_DRIVER'],
-    dialect='mssql',
-    server=os.environ['ODBC_SERVER'],
-    database=os.environ['ODBC_DATABASE'],
-    authentication=os.environ['ODBC_AUTHENTICATION'],
+    driver="pyodbc",
+    driver_version=os.environ["ODBC_DRIVER"],
+    dialect="mssql",
+    server=os.environ["ODBC_SERVER"],
+    database=os.environ["ODBC_DATABASE"],
+    authentication=os.environ["ODBC_AUTHENTICATION"],
     username=os.environ["AZURE_CLIENT_ID"],
     password=os.environ["AZURE_CLIENT_SECRET"],
 )
@@ -39,15 +39,15 @@ connection = dbo.connect_sql_db(
 # %%
 # READ IN SQL SCRIPTS
 # Identify appointments to edit
-with open('utils/identify_appointments_to_edit.sql', 'r') as file:
+with open("utils/identify_appointments_to_edit.sql", "r") as file:
     identify_appointments_to_edit = file.read()
 
 # Update appointment count
-with open('utils/update_appointment_count.sql', 'r') as file:
+with open("utils/update_appointment_count.sql", "r") as file:
     update_appointment_count = file.read()
 
 # Update appointment
-with open('utils/update_appointment.sql', 'r') as file:
+with open("utils/update_appointment.sql", "r") as file:
     update_appointment = file.read()
 
 # %%
@@ -59,43 +59,43 @@ df_appointments_to_edit = pd.read_sql_query(
 
 # %%
 # Escape single quotes in person names
-df_appointments_to_edit['person_name'] = df_appointments_to_edit[
-    'person_name'
+df_appointments_to_edit["person_name"] = df_appointments_to_edit[
+    "person_name"
 ].str.replace("'", "''")
 
 # %%
 # Escape single quotes in post names
-df_appointments_to_edit['post_name_old'] = df_appointments_to_edit[
-    'post_name_old'
+df_appointments_to_edit["post_name_old"] = df_appointments_to_edit[
+    "post_name_old"
 ].str.replace("'", "''")
-df_appointments_to_edit['post_name_new'] = df_appointments_to_edit[
-    'post_name_new'
+df_appointments_to_edit["post_name_new"] = df_appointments_to_edit[
+    "post_name_new"
 ].str.replace("'", "''")
 
 # %%
 # Undoing setting of appointment end dates to date analysis table was created
 df_appointments_to_edit.loc[
-    df_appointments_to_edit['end_date'] == datetime.date(2024, 6, 24),
-    'end_date'
+    df_appointments_to_edit["end_date"] == datetime.date(2024, 6, 24),
+    "end_date"
 ] = datetime.date(9999, 12, 31)
 
 # %%
 # PRODUCE SCRIPT
-update_appointments_code = '--- SET HOLD\nset noexec on\n\n'
+update_appointments_code = "--- SET HOLD\nset noexec on\n\n"
 
 for index, row in df_appointments_to_edit.iterrows():
 
     # Check if number of records affected is as expected
     update_appointments_count_snippet = update_appointment_count.format(
-        person_name=row['person_name'],
-        post_name_old=row['post_name_old'],
-        post_name_new=row['post_name_new'],
-        organisation_name=row['organisation_name'],
-        organisation_short_name=row['organisation_short_name'],
-        post_rank_old=row['post_rank_old'],
-        post_rank_new=row['post_rank_new'],
-        start_date=row['start_date'],
-        end_date=row['end_date'],
+        person_name=row["person_name"],
+        post_name_old=row["post_name_old"],
+        post_name_new=row["post_name_new"],
+        organisation_name=row["organisation_name"],
+        organisation_short_name=row["organisation_short_name"],
+        post_rank_old=row["post_rank_old"],
+        post_rank_new=row["post_rank_new"],
+        start_date=row["start_date"],
+        end_date=row["end_date"],
     )
 
     assert pd.read_sql_query(
@@ -110,18 +110,18 @@ for index, row in df_appointments_to_edit.iterrows():
 
     # Produce code
     update_appointments_snippet = update_appointment.format(
-        person_name=row['person_name'],
-        post_name_old=row['post_name_old'],
-        post_name_new=row['post_name_new'],
-        organisation_name=row['organisation_name'],
-        organisation_short_name=row['organisation_short_name'],
-        post_rank_old=row['post_rank_old'],
-        post_rank_new=row['post_rank_new'],
-        start_date=row['start_date'],
-        end_date=row['end_date'],
+        person_name=row["person_name"],
+        post_name_old=row["post_name_old"],
+        post_name_new=row["post_name_new"],
+        organisation_name=row["organisation_name"],
+        organisation_short_name=row["organisation_short_name"],
+        post_rank_old=row["post_rank_old"],
+        post_rank_new=row["post_rank_new"],
+        start_date=row["start_date"],
+        end_date=row["end_date"],
     )
 
-    update_appointments_code += update_appointments_snippet + '\n'
+    update_appointments_code += update_appointments_snippet + "\n"
 
 print(update_appointments_code)
 

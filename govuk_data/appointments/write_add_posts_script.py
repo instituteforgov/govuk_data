@@ -1,5 +1,5 @@
 # %%
-'''
+"""
     Purpose
         Write script to add new posts to core.post based on results of matching
     Inputs
@@ -14,7 +14,7 @@
         None
     Notes
         None
-'''
+"""
 
 import os
 
@@ -24,12 +24,12 @@ import pandas as pd
 # %%
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
-    driver='pyodbc',
-    driver_version=os.environ['ODBC_DRIVER'],
-    dialect='mssql',
-    server=os.environ['ODBC_SERVER'],
-    database=os.environ['ODBC_DATABASE'],
-    authentication=os.environ['ODBC_AUTHENTICATION'],
+    driver="pyodbc",
+    driver_version=os.environ["ODBC_DRIVER"],
+    dialect="mssql",
+    server=os.environ["ODBC_SERVER"],
+    database=os.environ["ODBC_DATABASE"],
+    authentication=os.environ["ODBC_AUTHENTICATION"],
     username=os.environ["AZURE_CLIENT_ID"],
     password=os.environ["AZURE_CLIENT_SECRET"],
 )
@@ -37,15 +37,15 @@ connection = dbo.connect_sql_db(
 # %%
 # READ IN SQL SCRIPTS
 # Identify posts to add
-with open('utils/identify_posts_to_add.sql', 'r') as file:
+with open("utils/identify_posts_to_add.sql", "r") as file:
     identify_posts_to_add = file.read()
 
 # Create post count
-with open('utils/create_post_count.sql', 'r') as file:
+with open("utils/create_post_count.sql", "r") as file:
     create_post_count = file.read()
 
 # Create post
-with open('utils/create_post.sql', 'r') as file:
+with open("utils/create_post.sql", "r") as file:
     create_post = file.read()
 
 # %%
@@ -57,24 +57,24 @@ df_posts_to_add = pd.read_sql_query(
 
 # %%
 # Escape single quotes in post names
-df_posts_to_add['post_name'] = df_posts_to_add[
-    'post_name'
+df_posts_to_add["post_name"] = df_posts_to_add[
+    "post_name"
 ].str.replace("'", "''")
 
 # %%
 # PRODUCE SCRIPT
-add_posts_code = '--- SET HOLD\nset noexec on\n\n'
+add_posts_code = "--- SET HOLD\nset noexec on\n\n"
 
 for index, row in df_posts_to_add.iterrows():
 
     # Check if number of records affected is as expected
     add_posts_count_snippet = create_post_count.format(
-        post_name=row['post_name'],
-        post_rank=row['post_rank'],
-        organisation_name=row['organisation_name'],
-        organisation_short_name=row['organisation_short_name'],
-        organisation_start_date=row['organisation_start_date'],
-        organisation_end_date=row['organisation_end_date'],
+        post_name=row["post_name"],
+        post_rank=row["post_rank"],
+        organisation_name=row["organisation_name"],
+        organisation_short_name=row["organisation_short_name"],
+        organisation_start_date=row["organisation_start_date"],
+        organisation_end_date=row["organisation_end_date"],
     )
     add_posts_count_snippet = add_posts_count_snippet.replace(
         "= 'None'", "is null"
@@ -92,17 +92,17 @@ for index, row in df_posts_to_add.iterrows():
 
     # Produce code
     add_posts_snippet = create_post.format(
-        post_name=row['post_name'],
-        post_rank=row['post_rank'],
-        organisation_name=row['organisation_name'],
-        organisation_short_name=row['organisation_short_name'],
-        organisation_start_date=row['organisation_start_date'],
-        organisation_end_date=row['organisation_end_date'],
+        post_name=row["post_name"],
+        post_rank=row["post_rank"],
+        organisation_name=row["organisation_name"],
+        organisation_short_name=row["organisation_short_name"],
+        organisation_start_date=row["organisation_start_date"],
+        organisation_end_date=row["organisation_end_date"],
     )
     add_posts_snippet = add_posts_snippet.replace(
         "= 'None'", "is null"
     )
 
-    add_posts_code += add_posts_snippet + '\n'
+    add_posts_code += add_posts_snippet + "\n"
 
 print(add_posts_code)

@@ -1,5 +1,5 @@
 # %%
-'''
+"""
     Purpose
         Match GOV.UK appointments to ministers database appointments, scoring
         each candidate pair on organisation name, post name (fuzzy) and date
@@ -27,7 +27,7 @@
         sense to switch the matching to be done on appointment records. The only downside with
         this is that GOV.UK records time on leave as a separate appointment – these will not
         be visible in our data
-'''
+"""
 
 import os
 import uuid
@@ -39,17 +39,17 @@ from sqlalchemy.dialects.mssql import BIT, DATE, FLOAT, NVARCHAR, UNIQUEIDENTIFI
 
 # %%
 # SET CONSTANTS
-DATESTAMP = '20260428'
+DATESTAMP = "20260428"
 
 # %%
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
-    driver='pyodbc',
-    driver_version=os.environ['ODBC_DRIVER'],
-    dialect='mssql',
-    server=os.environ['ODBC_SERVER'],
-    database=os.environ['ODBC_DATABASE'],
-    authentication=os.environ['ODBC_AUTHENTICATION'],
+    driver="pyodbc",
+    driver_version=os.environ["ODBC_DRIVER"],
+    dialect="mssql",
+    server=os.environ["ODBC_SERVER"],
+    database=os.environ["ODBC_DATABASE"],
+    authentication=os.environ["ODBC_AUTHENTICATION"],
     username=os.environ["AZURE_CLIENT_ID"],
     password=os.environ["AZURE_CLIENT_SECRET"],
 )
@@ -57,7 +57,7 @@ connection = dbo.connect_sql_db(
 # %%
 # READ IN DATA FOR MATCHING
 df_ifg_appt = pd.read_sql_query(
-    '''
+    """
     select
         a.id appointment_id,
         p.id person_id,
@@ -92,7 +92,7 @@ df_ifg_appt = pd.read_sql_query(
             t.organisation_id = o.id
     where
         ac.start_date >= '2010-05-11'
-    ''',
+    """,
     con=connection,
 )
 
@@ -119,21 +119,21 @@ df_govuk_appt = pd.read_sql_query(
 # %%
 # EDIT DATA
 # Convert date columns to datetime
-df_govuk_appt['start_date'] = pd.to_datetime(df_govuk_appt['start_date'], errors='coerce')
-df_govuk_appt['end_date'] = pd.to_datetime(df_govuk_appt['end_date'], errors='coerce')
-df_ifg_appt['start_date'] = pd.to_datetime(df_ifg_appt['start_date'], errors='coerce')
-df_ifg_appt['end_date'] = pd.to_datetime(df_ifg_appt['end_date'], errors='coerce')
+df_govuk_appt["start_date"] = pd.to_datetime(df_govuk_appt["start_date"], errors="coerce")
+df_govuk_appt["end_date"] = pd.to_datetime(df_govuk_appt["end_date"], errors="coerce")
+df_ifg_appt["start_date"] = pd.to_datetime(df_ifg_appt["start_date"], errors="coerce")
+df_ifg_appt["end_date"] = pd.to_datetime(df_ifg_appt["end_date"], errors="coerce")
 
 # %%
 # Set end dates of ongoing appointments to today's date
 df_govuk_appt.loc[
-    df_govuk_appt['end_date'].isnull(),
-    'end_date'
+    df_govuk_appt["end_date"].isnull(),
+    "end_date"
 ] = pd.Timestamp.now().normalize()
 
 df_ifg_appt.loc[
-    df_ifg_appt['end_date'].isnull(),
-    'end_date'
+    df_ifg_appt["end_date"].isnull(),
+    "end_date"
 ] = pd.Timestamp.now().normalize()
 
 # %%
@@ -142,90 +142,90 @@ df_ifg_appt.loc[
 df_merge = pd.merge(
     df_ifg_appt,
     df_govuk_appt,
-    how='inner',
-    on='person_id',
-    suffixes=('_ifg', '_govuk')
+    how="inner",
+    on="person_id",
+    suffixes=("_ifg", "_govuk")
 )
 
 # %%
 # Exact match on organisation_short_name: 1 if match, 0.5 if not
-df_merge['organisation_short_name_match'] = 0.5
+df_merge["organisation_short_name_match"] = 0.5
 df_merge.loc[
-    df_merge['organisation_short_name_ifg'] == df_merge['organisation_short_name_govuk'],
-    'organisation_short_name_match'
+    df_merge["organisation_short_name_ifg"] == df_merge["organisation_short_name_govuk"],
+    "organisation_short_name_match"
 ] = 1
 
 # %%
 # Fuzzy match on post_name
-df_merge['post_name_match'] = 0
-df_merge['post_name_match'] = df_merge.apply(
-    lambda x: fuzz.ratio(x['post_name_ifg'], x['post_name_govuk']) / 100,
+df_merge["post_name_match"] = 0
+df_merge["post_name_match"] = df_merge.apply(
+    lambda x: fuzz.ratio(x["post_name_ifg"], x["post_name_govuk"]) / 100,
     axis=1
 )
 
 # %%
 # Date match on start_date, end_date: 1 if exact match, minus 0.01 for each day difference,
 # 0 if more than 100 days difference
-df_merge['start_date_match'] = 1 - (
-    abs(df_merge['start_date_ifg'] - df_merge['start_date_govuk']).dt.days / 100
+df_merge["start_date_match"] = 1 - (
+    abs(df_merge["start_date_ifg"] - df_merge["start_date_govuk"]).dt.days / 100
 )
-df_merge['start_date_match'] = df_merge['start_date_match'].clip(lower=0)
-df_merge['end_date_match'] = 1 - (
-    abs(df_merge['end_date_ifg'] - df_merge['end_date_govuk']).dt.days / 100
+df_merge["start_date_match"] = df_merge["start_date_match"].clip(lower=0)
+df_merge["end_date_match"] = 1 - (
+    abs(df_merge["end_date_ifg"] - df_merge["end_date_govuk"]).dt.days / 100
 )
-df_merge['end_date_match'] = df_merge['end_date_match'].clip(lower=0)
+df_merge["end_date_match"] = df_merge["end_date_match"].clip(lower=0)
 
-df_merge['date_match'] = df_merge['start_date_match'] * 0.5 + df_merge['end_date_match'] * 0.5
+df_merge["date_match"] = df_merge["start_date_match"] * 0.5 + df_merge["end_date_match"] * 0.5
 
 # %%
 # Calculate weighted average of matches
-df_merge['match_score'] = (
-    df_merge['organisation_short_name_match'] * 0.3 +
-    df_merge['post_name_match'] * 0.5 +
-    df_merge['date_match'] * 0.2
+df_merge["match_score"] = (
+    df_merge["organisation_short_name_match"] * 0.3 +
+    df_merge["post_name_match"] * 0.5 +
+    df_merge["date_match"] * 0.2
 )
 
 # %%
 # Sort by appointment_id_ifg and match_score
 df_merge = df_merge.sort_values(
-    by=['person_name_ifg', 'appointment_id_ifg', 'match_score'],
+    by=["person_name_ifg", "appointment_id_ifg", "match_score"],
     ascending=[True, True, False]
 ).reset_index(drop=True)
 
 # %%
 # Add columns for tracking matching
-df_merge['reviewed'] = False
-df_merge['match_accepted'] = False
-df_merge['replace_post_name'] = False
-df_merge['notes'] = None
+df_merge["reviewed"] = False
+df_merge["match_accepted"] = False
+df_merge["replace_post_name"] = False
+df_merge["notes"] = None
 
 # %%
 # Auto-accept matches with match_score >= 1
 df_merge.loc[
-    df_merge['match_score'] >= 1,
-    'match_accepted'
+    df_merge["match_score"] >= 1,
+    "match_accepted"
 ] = True
 
 # %%
 # Auto-accept matches with organisation_short_name_match = 1, post_name_match = 1 and
 # date_match >= 0.8
 df_merge.loc[
-    (df_merge['organisation_short_name_match'] == 1) &
-    (df_merge['post_name_match'] == 1) &
-    (df_merge['date_match'] >= 0.8),
-    'match_accepted'
+    (df_merge["organisation_short_name_match"] == 1) &
+    (df_merge["post_name_match"] == 1) &
+    (df_merge["date_match"] >= 0.8),
+    "match_accepted"
 ] = True
 
 # %%
 # Set reviewed to True for appointments that have been auto-accepted
 df_merge.loc[
-    df_merge['appointment_id_ifg'].isin(
+    df_merge["appointment_id_ifg"].isin(
         df_merge.loc[
-            df_merge['match_accepted'],
-            'appointment_id_ifg'
+            df_merge["match_accepted"],
+            "appointment_id_ifg"
         ]
     ),
-    'reviewed'
+    "reviewed"
 ] = True
 
 # %%
@@ -234,47 +234,47 @@ uuid_table_name = str(uuid.uuid4())
 
 df_merge.to_sql(
     uuid_table_name,
-    schema='workflow',
+    schema="workflow",
     con=connection,
     dtype={
-        'appointment_id_ifg': UNIQUEIDENTIFIER,
-        'person_id': UNIQUEIDENTIFIER,
-        'person_name_ifg': NVARCHAR(256),
-        'MP/peer': NVARCHAR(10),
-        'post_name_ifg': NVARCHAR(256),
-        'post_rank_ifg': NVARCHAR(256),
-        'organisation_name_ifg': NVARCHAR(256),
-        'organisation_short_name_ifg': NVARCHAR(256),
-        'cabinet_status': NVARCHAR(256),
-        'is_on_leave_ifg': BIT,
-        'is_acting_ifg': BIT,
-        'leave_reason_ifg': NVARCHAR(256),
-        'start_date_ifg': DATE,
-        'end_date_ifg': DATE,
-        'appointment_id_govuk': UNIQUEIDENTIFIER,
-        'person_name_govuk': NVARCHAR(256),
-        'post_name_govuk': NVARCHAR(256),
-        'post_rank_govuk': NVARCHAR(256),
-        'organisation_name_govuk': NVARCHAR(256),
-        'organisation_short_name_govuk': NVARCHAR(256),
-        'is_on_leave_govuk': BIT,
-        'is_acting_govuk': BIT,
-        'leave_reason_govuk': NVARCHAR(256),
-        'start_date_govuk': DATE,
-        'end_date_govuk': DATE,
-        'organisation_short_name_match': FLOAT,
-        'post_name_match': FLOAT,
-        'start_date_match': FLOAT,
-        'end_date_match': FLOAT,
-        'date_match': FLOAT,
-        'match_score': FLOAT,
-        'reviewed': BIT,
-        'match_accepted': BIT,
-        'replace_post_name': BIT,
-        'notes': NVARCHAR(512),
+        "appointment_id_ifg": UNIQUEIDENTIFIER,
+        "person_id": UNIQUEIDENTIFIER,
+        "person_name_ifg": NVARCHAR(256),
+        "MP/peer": NVARCHAR(10),
+        "post_name_ifg": NVARCHAR(256),
+        "post_rank_ifg": NVARCHAR(256),
+        "organisation_name_ifg": NVARCHAR(256),
+        "organisation_short_name_ifg": NVARCHAR(256),
+        "cabinet_status": NVARCHAR(256),
+        "is_on_leave_ifg": BIT,
+        "is_acting_ifg": BIT,
+        "leave_reason_ifg": NVARCHAR(256),
+        "start_date_ifg": DATE,
+        "end_date_ifg": DATE,
+        "appointment_id_govuk": UNIQUEIDENTIFIER,
+        "person_name_govuk": NVARCHAR(256),
+        "post_name_govuk": NVARCHAR(256),
+        "post_rank_govuk": NVARCHAR(256),
+        "organisation_name_govuk": NVARCHAR(256),
+        "organisation_short_name_govuk": NVARCHAR(256),
+        "is_on_leave_govuk": BIT,
+        "is_acting_govuk": BIT,
+        "leave_reason_govuk": NVARCHAR(256),
+        "start_date_govuk": DATE,
+        "end_date_govuk": DATE,
+        "organisation_short_name_match": FLOAT,
+        "post_name_match": FLOAT,
+        "start_date_match": FLOAT,
+        "end_date_match": FLOAT,
+        "date_match": FLOAT,
+        "match_score": FLOAT,
+        "reviewed": BIT,
+        "match_accepted": BIT,
+        "replace_post_name": BIT,
+        "notes": NVARCHAR(512),
     },
     index=False,
-    if_exists='replace',
+    if_exists="replace",
 )
 
 # %%

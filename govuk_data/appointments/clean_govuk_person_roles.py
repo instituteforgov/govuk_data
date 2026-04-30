@@ -1,5 +1,5 @@
 # %%
-'''
+"""
     Purpose
         Clean post name data in the GOV.UK person page analysis table
     Inputs
@@ -14,7 +14,7 @@
           or acting, removal of joint post names, handling of Parliamentary Secretary post
           names, standardisation of MoS/PUSS post names, removal of Lords minister post names
         - Run after personpage_createanalysistable.sql
-'''
+"""
 
 import os
 
@@ -26,17 +26,17 @@ import utils.utils as utils
 
 # %%
 # SET CONSTANTS
-DATESTAMP = '20260428'
+DATESTAMP = "20260428"
 
 # %%
 # CONNECT TO D/B
 connection = dbo.connect_sql_db(
-    driver='pyodbc',
-    driver_version=os.environ['ODBC_DRIVER'],
-    dialect='mssql',
-    server=os.environ['ODBC_SERVER'],
-    database=os.environ['ODBC_DATABASE'],
-    authentication=os.environ['ODBC_AUTHENTICATION'],
+    driver="pyodbc",
+    driver_version=os.environ["ODBC_DRIVER"],
+    dialect="mssql",
+    server=os.environ["ODBC_SERVER"],
+    database=os.environ["ODBC_DATABASE"],
+    authentication=os.environ["ODBC_AUTHENTICATION"],
     username=os.environ["AZURE_CLIENT_ID"],
     password=os.environ["AZURE_CLIENT_SECRET"],
 )
@@ -44,63 +44,63 @@ connection = dbo.connect_sql_db(
 # %%
 # READ IN ANALYSIS TABLE
 df = pd.read_sql_query(
-    f'''
+    f"""
     select *
     from [analysis].[ukgovt.minister_govuk_people_page_content_{DATESTAMP}]
-    ''',
+    """,
     con=connection
 )
 
 # %%
 # CLEAN DATA
 # Remove ampersands
-df['post_name_clean'] = df['post_name_clean'].apply(utils.replace_ampersand)
+df["post_name_clean"] = df["post_name_clean"].apply(utils.replace_ampersand)
 
 # %%
 # Identify ministers on leave and doing roles in an acting capacity
-df[['post_name_clean', 'is_on_leave', 'is_acting', 'leave_reason']] = pd.DataFrame(
-    df['post_name_clean'].apply(utils.identify_ministers_on_leave_acting).to_list()
+df[["post_name_clean", "is_on_leave", "is_acting", "leave_reason"]] = pd.DataFrame(
+    df["post_name_clean"].apply(utils.identify_ministers_on_leave_acting).to_list()
 )
 
 # %%
 # Remove joint post names
-df['post_name_clean'] = df['post_name_clean'].apply(utils.remove_joint_post_name)
+df["post_name_clean"] = df["post_name_clean"].apply(utils.remove_joint_post_name)
 
 # %%
 # Handle post names that are denormalised by having an equalities minister name appended
-df['post_name_clean'] = df['post_name_clean'].apply(utils.handle_equalities_minister_post_name)
+df["post_name_clean"] = df["post_name_clean"].apply(utils.handle_equalities_minister_post_name)
 
 # %%
 # Handle Parliamentary Secretary post names
-df[['post_name_clean', 'post_rank']] = pd.DataFrame(
-    df['post_name_clean'].apply(utils.handle_parliamentary_secretary_post_name).to_list()
+df[["post_name_clean", "post_rank"]] = pd.DataFrame(
+    df["post_name_clean"].apply(utils.handle_parliamentary_secretary_post_name).to_list()
 )
 
 # %%
 # Remove details of Lords minister roles
-df['post_name_clean'] = df['post_name_clean'].apply(utils.remove_lords_minister_post_names)
+df["post_name_clean"] = df["post_name_clean"].apply(utils.remove_lords_minister_post_names)
 
 # %%
 # Standardise MoS, PUSS post name
 # Ref: https://stackoverflow.com/a/66267940/4659442
-df[['post_name_clean', 'post_rank']] = pd.DataFrame(
-    df['post_name_clean'].apply(utils.standardise_mos_puss_post_name).to_list()
+df[["post_name_clean", "post_rank"]] = pd.DataFrame(
+    df["post_name_clean"].apply(utils.standardise_mos_puss_post_name).to_list()
 )
 
 # %%
 df.to_sql(
-    f'ukgovt.minister_govuk_people_page_content_{DATESTAMP}',
-    schema='analysis',
+    f"ukgovt.minister_govuk_people_page_content_{DATESTAMP}",
+    schema="analysis",
     con=connection,
     dtype={
-        'person_id': UNIQUEIDENTIFIER,
-        'person_id_govuk': UNIQUEIDENTIFIER,
-        'appointment_id_govuk': UNIQUEIDENTIFIER,
-        'post_id_govuk': UNIQUEIDENTIFIER,
-        'organisation_id_govuk': UNIQUEIDENTIFIER,
+        "person_id": UNIQUEIDENTIFIER,
+        "person_id_govuk": UNIQUEIDENTIFIER,
+        "appointment_id_govuk": UNIQUEIDENTIFIER,
+        "post_id_govuk": UNIQUEIDENTIFIER,
+        "organisation_id_govuk": UNIQUEIDENTIFIER,
     },
     index=False,
-    if_exists='replace',
+    if_exists="replace",
 )
 
 # %%

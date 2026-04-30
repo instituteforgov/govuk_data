@@ -4,7 +4,7 @@ import re
 def handle_equalities_minister_post_name(
     post_name: str
 ) -> str:
-    '''
+    """
     Handle post names that are denormalised by having an equalities minister
     name appended
 
@@ -17,9 +17,9 @@ def handle_equalities_minister_post_name(
     Notes
         - Formats handled:
             - Minister for Sport, Tourism and Civil Society, and Minister for Equalities -> Minister for Sport, Tourism and Civil Society       # noqa: E501
-    '''
-    if ', and Minister for Equalities' in post_name:
-        post_name = post_name.replace(', and Minister for Equalities', '')
+    """
+    if ", and Minister for Equalities" in post_name:
+        post_name = post_name.replace(", and Minister for Equalities", "")
 
     return post_name
 
@@ -27,7 +27,7 @@ def handle_equalities_minister_post_name(
 def handle_parliamentary_secretary_post_name(
     post_name: str
 ) -> tuple[str, str]:
-    '''
+    """
     Handle Parliamentary Secretary post names
 
     Parameters
@@ -41,14 +41,14 @@ def handle_parliamentary_secretary_post_name(
         - Formats handled:
             - Parliamentary Secretary to the Treasury (Chief Whip) -> No change
             - Parliamentary Secretary (Minister for Civil Society) -> Parliamentary Secretary for Civil Society     # noqa: E501
-    '''
+    """
     # Handle parliamentary secretary post names
-    if 'Parliamentary Secretary (Minister for' in post_name:
+    if "Parliamentary Secretary (Minister for" in post_name:
         post_name = post_name.replace(
-            'Parliamentary Secretary (Minister for ',
-            'Parliamentary Secretary for '
-        ).replace(')', '')
-        post_rank = 'PUSS'
+            "Parliamentary Secretary (Minister for ",
+            "Parliamentary Secretary for "
+        ).replace(")", "")
+        post_rank = "PUSS"
 
         return post_name, post_rank
 
@@ -59,7 +59,7 @@ def handle_parliamentary_secretary_post_name(
 def identify_ministers_on_leave_acting(
     post_name: str
 ) -> tuple[str, bool, bool, str]:
-    '''
+    """
     Identify ministers on leave or doing a role in an acting capacity
 
     Parameters
@@ -81,23 +81,23 @@ def identify_ministers_on_leave_acting(
             Heritage (maternity cover)
         - This should be applied before standardising post names, as we may
         need to standardise the results of this function
-    '''
+    """
 
     # Handle on leave
-    if 'Minister on Leave' in post_name:
-        post_name = post_name.split('(', maxsplit=1)[1].split(')', maxsplit=1)[0]
+    if "Minister on Leave" in post_name:
+        post_name = post_name.split("(", maxsplit=1)[1].split(")", maxsplit=1)[0]
         is_on_leave = True
-        leave_reason = 'Maternity leave'
+        leave_reason = "Maternity leave"
     else:
         is_on_leave = False
         leave_reason = None
 
     # Handle acting
-    if 'Interim' in post_name:
-        post_name = post_name.replace('Interim ', '')
+    if "Interim" in post_name:
+        post_name = post_name.replace("Interim ", "")
         is_acting = True
-    elif '(maternity cover)' in post_name:
-        post_name = post_name.replace(' (maternity cover)', '')
+    elif "(maternity cover)" in post_name:
+        post_name = post_name.replace(" (maternity cover)", "")
         is_acting = True
     else:
         is_acting = False
@@ -108,7 +108,7 @@ def identify_ministers_on_leave_acting(
 def remove_joint_post_name(
     post_name: str
 ) -> str:
-    '''
+    """
     Remove details of roles being done in a joint capacity from ministerial post names
 
     Parameters
@@ -122,10 +122,10 @@ def remove_joint_post_name(
             - Minister of State (Climate, Environment and Energy – joint with FCDO and Defra)
         - This should be applied before standardising post names, as we may
         need to standardise the results of this function
-    '''
+    """
     # Handle joint post names
-    if ' – joint with ' in post_name:
-        post_name = re.sub(r'\s\S\sjoint with\s\w*(\sand\s\w*)*', '', post_name)        # noqa: E501, F821 (needed to fend of a flake8 misfire)
+    if " – joint with " in post_name:
+        post_name = re.sub(r"\s\S\sjoint with\s\w*(\sand\s\w*)*", "", post_name)        # noqa: E501, F821 (needed to fend of a flake8 misfire)
 
     return post_name
 
@@ -133,7 +133,7 @@ def remove_joint_post_name(
 def remove_lords_minister_post_names(
     post_name: str
 ) -> str:
-    '''
+    """
     Remove details of Lords minister roles from post names
 
     Parameters
@@ -151,15 +151,15 @@ def remove_lords_minister_post_names(
                 - Minister for Social Housing and Faith, and Lords Minister
         - This should be applied before standardising post names, as we may
         need to standardise the results of this function
-    '''
-    if ' (Minister for the Lords)' in post_name:
-        post_name = post_name.replace(' (Minister for the Lords)', '')
-    elif ' (Lords Minister)' in post_name:
-        post_name = post_name.replace(' (Lords Minister)', '')
-    elif ' and DCMS Lords Minister' in post_name:
-        post_name = post_name.replace(' and DCMS Lords Minister', '')
-    elif ', and Lords Minister' in post_name:
-        post_name = post_name.replace(', and Lords Minister', '')
+    """
+    if " (Minister for the Lords)" in post_name:
+        post_name = post_name.replace(" (Minister for the Lords)", "")
+    elif " (Lords Minister)" in post_name:
+        post_name = post_name.replace(" (Lords Minister)", "")
+    elif " and DCMS Lords Minister" in post_name:
+        post_name = post_name.replace(" and DCMS Lords Minister", "")
+    elif ", and Lords Minister" in post_name:
+        post_name = post_name.replace(", and Lords Minister", "")
 
     return post_name
 
@@ -167,7 +167,7 @@ def remove_lords_minister_post_names(
 def replace_ampersand(
     post_name: str
 ) -> str:
-    '''
+    """
     Replace '&' with 'and' in post names
 
     Parameters
@@ -178,8 +178,8 @@ def replace_ampersand(
 
     Notes
         None
-    '''
-    post_name = post_name.replace('&', 'and')
+    """
+    post_name = post_name.replace("&", "and")
 
     return post_name
 
@@ -187,7 +187,7 @@ def replace_ampersand(
 def standardise_mos_puss_post_name(
     post_name: str
 ) -> tuple[str, str]:
-    '''
+    """
     Standardise different MoS, PUSS post name formats
 
     Parameters
@@ -219,57 +219,57 @@ def standardise_mos_puss_post_name(
             - Parliamentary Under Secretary of State, Minister for Faith -> Minister for Faith
 
             - Parliamentary Under Secretary of State and Minister for Defence Equipment, Support and Technology (including Defence Exports) -> Minister for Defence Equipment, Support and Technology (including Defence Exports)       # noqa: E501
-    '''
+    """
     # Handle hyphenated PUSS post names
-    if 'Under-Secretary' in post_name:
+    if "Under-Secretary" in post_name:
         post_name = standardise_puss_punctuation(post_name)
 
     # Handle cases where the post name is not a MoS or PUSS post name
     if not (
-        'Minister of State' in post_name or 'Parliamentary Under Secretary of State' in post_name
+        "Minister of State" in post_name or "Parliamentary Under Secretary of State" in post_name
     ):
         return post_name, None
 
     # Set post rank
-    if 'Parliamentary Under Secretary of State' in post_name:
-        post_rank = 'PUSS'
-    elif 'Minister of State' in post_name:
-        post_rank = 'MoS'
+    if "Parliamentary Under Secretary of State" in post_name:
+        post_rank = "PUSS"
+    elif "Minister of State" in post_name:
+        post_rank = "MoS"
     else:
         post_rank = None
 
     # Handle 'Minister of State at the' cases
-    if ' at the ' in post_name:
-        post_name = post_name.split(' at the ', maxsplit=1)[0]
+    if " at the " in post_name:
+        post_name = post_name.split(" at the ", maxsplit=1)[0]
 
     # Handle 'Minister of State for Cabinet Office' cases
-    if 'Minister of State for Cabinet Office' == post_name:
-        post_name = 'Minister of State'
-    elif 'Minister of State for Cabinet Office (' in post_name:
+    if "Minister of State for Cabinet Office" == post_name:
+        post_name = "Minister of State"
+    elif "Minister of State for Cabinet Office (" in post_name:
         post_name = post_name.replace(
-            'Minister of State for Cabinet Office (', 'Minister for '
-        ).replace(')', '')
+            "Minister of State for Cabinet Office (", "Minister for "
+        ).replace(")", "")
 
     # Handle 'Parliamentary Under Secretary of State and' cases
-    if 'Parliamentary Under Secretary of State and ' in post_name:
-        post_name = post_name.split('and ', maxsplit=1)[1]
+    if "Parliamentary Under Secretary of State and " in post_name:
+        post_name = post_name.split("and ", maxsplit=1)[1]
 
     # Handle 'Parliamentary Under Secretary of State, ' cases
-    if 'Parliamentary Under Secretary of State, ' in post_name:
-        post_name = post_name.split(', ', maxsplit=1)[1]
+    if "Parliamentary Under Secretary of State, " in post_name:
+        post_name = post_name.split(", ", maxsplit=1)[1]
 
     # Handle cases with brackets
     # NB: Needs to be done after handling 'Parliamentary Under Secretary of State and' cases
     # to handle 'Parliamentary Under Secretary of State and Minister for Defence Equipment,
     # Support and Technology (including Defence Exports)' correctly
-    if '(' in post_name:
-        if '(Minister' in post_name:
-            post_name = post_name.split('(', maxsplit=1)[1].split(')', maxsplit=1)[0]
-        elif 'Minister for' not in post_name:
-            post_name = 'Minister for ' + post_name.split(
-                '(',
+    if "(" in post_name:
+        if "(Minister" in post_name:
+            post_name = post_name.split("(", maxsplit=1)[1].split(")", maxsplit=1)[0]
+        elif "Minister for" not in post_name:
+            post_name = "Minister for " + post_name.split(
+                "(",
                 maxsplit=1
-            )[1].split(')', maxsplit=1)[0]
+            )[1].split(")", maxsplit=1)[0]
 
     post_name = post_name.strip()
 
@@ -279,7 +279,7 @@ def standardise_mos_puss_post_name(
 def standardise_puss_punctuation(
     post_name: str
 ) -> str:
-    '''
+    """
     Standardise punctuation in PUSS post names
 
     Parameters
@@ -290,8 +290,8 @@ def standardise_puss_punctuation(
 
     Notes
         None
-    '''
+    """
     # Handle hyphenated PUSS post names
-    post_name = post_name.replace('Under-Secretary', 'Under Secretary')
+    post_name = post_name.replace("Under-Secretary", "Under Secretary")
 
     return post_name
