@@ -38,6 +38,11 @@ union
 select *
 from analysis.[ukgovt.minister_ids_govuk_strings_20240503]
 
+union
+
+select *
+from analysis.[ukgovt.minister_ids_govuk_strings_20260428]
+
 
 
 --- QA
