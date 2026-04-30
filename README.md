@@ -55,8 +55,8 @@ pip install -r requirements.txt
 | --- | --- |
 | `core` | Core tables that make up the IfG Ministers Database — `person`, `appointment`, `post`, `organisation`, etc. Read-only from this pipeline's perspective |
 | `source` | Raw data as scraped or extracted from GOV.UK, written by `people_strings/scrape_govuk_people.py` and `appointments/extract_govuk_person_pages.py` |
-| `reference` | Consolidated lookup tables used across runs, built up by `build_people_strings_reference.sql` |
 | `analysis` | Processed and intermediate tables produced during matching and cleaning |
+| `reference` | Consolidated lookup tables used across runs, built up by `build_people_strings_reference.sql` |
 | `workflow` | Ephemeral per-run matching tables written by `match_govuk_appointments.py`; a new UUID-named table is created each run |
 
 ## People strings pipeline
