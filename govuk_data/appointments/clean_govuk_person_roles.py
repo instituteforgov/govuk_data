@@ -22,7 +22,7 @@ from ds_utils import database_operations as dbo
 import pandas as pd
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 
-import utils.utils as utils
+import govuk_data.appointments.utils.utils as utils
 
 # %%
 # SET CONSTANTS
