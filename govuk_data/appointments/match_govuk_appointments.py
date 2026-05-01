@@ -1,32 +1,24 @@
 # %%
 """
     Purpose
-        Match GOV.UK appointments to ministers database appointments, scoring
-        each candidate pair on organisation name, post name (fuzzy) and date
-        proximity, and auto-accepting high-confidence matches
+        Match GOV.UK appointments to ministers database appointments, scoring each candidate pair on organisation name, post name (fuzzy) and date proximity, and auto-accepting high-confidence matches
     Inputs
         - SQL: analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]
         - SQL: core.person
         - SQL: core.appointment
         - SQL: core.appointment_characteristics
+        - SQL: core.representation
+        - SQL: core.representation_characteristics
         - SQL: core.post
         - SQL: core.organisation
     Outputs
-        - SQL: workflow.<uuid>  (UUID printed to console; must be substituted manually
-          into personpage_reviewmatchoutput.sql, write_add_posts_script.py and
-          write_update_appointments_script.py)
+        - SQL: workflow.<uuid>  (UUID printed to console; must be substituted manually into personpage_reviewmatchoutput.sql, write_add_posts_script.py and write_update_appointments_script.py)
     Parameters
         None
     Notes
         None
     Future enhancements
-        - To date this is done by matching appointment characteristics records to the GOV.UK.
-        This has the downsides of meaning there are more records to check matches for and when
-        we auto-generate code to update appointments we can get snippets attempting to update
-        each of several spells in an appointment (or records would need collapsing). It will make
-        sense to switch the matching to be done on appointment records. The only downside with
-        this is that GOV.UK records time on leave as a separate appointment – these will not
-        be visible in our data
+        - To date this is done by matching appointment characteristics records to the GOV.UK. This has the downsides of meaning there are more records to check matches for and when we auto-generate code to update appointments we can get snippets attempting to update each of several spells in an appointment (or records would need collapsing). It will make sense to switch the matching to be done on appointment records. The only downside with this is that GOV.UK records time on leave as a separate appointment – these will not be visible in our data
 """
 
 import os
@@ -65,29 +57,33 @@ df_ifg_appt = pd.read_sql_query(
         p.id person_id,
         p.name person_name,
         case
-            when p.is_mp = 1 then 'MP'
-            when p.is_peer = 1 then 'Peer'
-        end [MP/peer],
+            when r.house = 'Commons' then 'MP'
+            when r.house = 'Lords' then 'Peer'
+        end mp_peer,
         t.name post_name,
-        t.rank_equivalence post_rank,
-        o.name organisation_name,
         o.short_name organisation_short_name,
-        ac.cabinet_status,
-        ac.is_on_leave,
-        ac.is_acting,
-        ac.leave_reason,
-        ac.start_date,
-        case
-            when ac.end_date = '9999-12-31' then null
-            else ac.end_date
-        end end_date
-    from core.person p
-        inner join core.appointment a on
-            p.id = a.person_id and
-            isnull(p.start_date, '1900-01-01') <= a.start_date and
-            p.end_date > a.start_date
+        t.rank_equivalence rank,
+        ac.cabinet_status cabinet_status,
+        ac.is_on_leave on_leave,
+        ac.is_acting acting,
+        ac.leave_reason leave_reason,
+        ac.start_date start_date,
+        ac.end_date end_date
+    from core.appointment a
         inner join core.appointment_characteristics ac on
             a.id = ac.appointment_id
+        inner join core.person p on
+            a.person_id = p.id and
+            a.start_date >= isnull(p.start_date, '1900-01-01') and
+            a.start_date < isnull(p.end_date, '9999-12-31')
+        left join core.representation r on
+            a.person_id = r.person_id and
+            a.start_date >= r.start_date and
+            a.start_date < isnull(r.end_date, '9999-12-31')
+        left join core.representation_characteristics rc on
+            r.id = rc.representation_id and
+            a.start_date >= rc.start_date and
+            a.start_date < isnull(rc.end_date, '9999-12-31')
         inner join core.post t on
             a.post_id = t.id
         inner join core.organisation o on
@@ -121,10 +117,10 @@ df_govuk_appt = pd.read_sql_query(
 # %%
 # EDIT DATA
 # Convert date columns to datetime
-df_govuk_appt["start_date"] = pd.to_datetime(df_govuk_appt["start_date"], errors="coerce")
-df_govuk_appt["end_date"] = pd.to_datetime(df_govuk_appt["end_date"], errors="coerce")
 df_ifg_appt["start_date"] = pd.to_datetime(df_ifg_appt["start_date"], errors="coerce")
 df_ifg_appt["end_date"] = pd.to_datetime(df_ifg_appt["end_date"], errors="coerce")
+df_govuk_appt["start_date"] = pd.to_datetime(df_govuk_appt["start_date"], errors="coerce")
+df_govuk_appt["end_date"] = pd.to_datetime(df_govuk_appt["end_date"], errors="coerce")
 
 # %%
 # Set end dates of ongoing appointments to today's date
@@ -234,6 +230,8 @@ df_merge.loc[
 # SAVE TO DB
 uuid_table_name = str(uuid.uuid4())
 
+print(uuid_table_name)
+
 df_merge.to_sql(
     uuid_table_name,
     schema="workflow",
@@ -242,7 +240,7 @@ df_merge.to_sql(
         "appointment_id_ifg": UNIQUEIDENTIFIER,
         "person_id": UNIQUEIDENTIFIER,
         "person_name_ifg": NVARCHAR(256),
-        "MP/peer": NVARCHAR(10),
+        "mp_peer": NVARCHAR(10),
         "post_name_ifg": NVARCHAR(256),
         "post_rank_ifg": NVARCHAR(256),
         "organisation_name_ifg": NVARCHAR(256),
