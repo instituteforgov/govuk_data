@@ -64,8 +64,8 @@ df_ifg_appt = pd.read_sql_query(
         o.short_name organisation_short_name,
         t.rank_equivalence rank,
         ac.cabinet_status cabinet_status,
-        ac.is_on_leave on_leave,
-        ac.is_acting acting,
+        ac.is_on_leave is_on_leave,
+        ac.is_acting is_acting,
         ac.leave_reason leave_reason,
         ac.start_date start_date,
         ac.end_date end_date
