@@ -3,7 +3,7 @@
       - QA the analysis table of GOV.UK person page data after it has been created
         and cleaned
     Inputs
-      - SQL: analysis.[ukgovt.minister_govuk_people_page_content_20240503]
+      - SQL: analysis.[ukgovt.minister_govuk_people_page_content_20260428]
     Outputs
       None
     Parameters
@@ -18,7 +18,7 @@
 -- Appointments with a duration of one day or less
 select
     *
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503]
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428]
 where
     datediff(day, appointment_start_date, appointment_end_date) <= 1
 order by
@@ -38,7 +38,7 @@ select
     appointment_end_date,
     count(1) count
 into #complete_duplicates
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503]
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428]
 group by
     person_id,
     person_name,
@@ -58,7 +58,7 @@ select
     appointment_id_govuk,
     appointment_start_date,
     appointment_end_date
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] t
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428] t
 where
     exists (
         select *
@@ -79,7 +79,7 @@ select
     appointment_id_govuk,
     count(1) count
 into #duplicates
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503]
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428]
 group by
     appointment_id_govuk
 having
@@ -92,7 +92,7 @@ select
     appointment_id_govuk,
     appointment_start_date,
     appointment_end_date
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] t
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428] t
 where
     exists (
         select *

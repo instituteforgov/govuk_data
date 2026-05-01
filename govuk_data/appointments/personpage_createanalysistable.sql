@@ -1,14 +1,12 @@
 /***************************************************************************************************************************************************************************
     Purpose
       - Create analysis table of GOV.UK person page data from the source table
-      - Applies filtering (non-ministerial roles, Welsh-locale duplicates, excluded
-        posts), drops very short appointments, and applies one-off post name fixes
-      - Adds blank columns (post_name_clean, post_rank, organisation_name_clean, etc.)
-        to be populated by clean_govuk_person_roles.py
+      - Applies filtering (non-ministerial roles, Welsh-locale duplicates, excluded posts), drops very short appointments, and applies one-off post name fixes
+      - Adds blank columns (post_name_clean, post_rank, organisation_name_clean, etc.) to be populated by clean_govuk_person_roles.py
     Inputs
-      - SQL: source.[ukgovt.minister_govuk_people_page_content_20240503]
+      - SQL: source.[ukgovt.minister_govuk_people_page_content_20260428]
     Outputs
-      - SQL: analysis.[ukgovt.minister_govuk_people_page_content_20240503]
+      - SQL: analysis.[ukgovt.minister_govuk_people_page_content_20260428]
     Parameters
       None
     Notes
@@ -27,7 +25,7 @@ set noexec on
 -- Create slimmed down table
 -- NB: This applies distinct, as there are otherwise erroneously some
 -- duplicates, owing to errors in the source data
-drop table if exists [analysis].[ukgovt.minister_govuk_people_page_content_20240503]
+drop table if exists [analysis].[ukgovt.minister_govuk_people_page_content_20260428]
 select distinct
     [ifg_person_id] person_id,
     [content_id] person_id_govuk,
@@ -47,8 +45,8 @@ select distinct
 	cast(null as varchar(128)) organisation_short_name_clean,
 	cast([links.role_appointments.details.started_on] as date) appointment_start_date,
 	cast([links.role_appointments.details.ended_on] as date) appointment_end_date
-into [analysis].[ukgovt.minister_govuk_people_page_content_20240503]
-from [source].[ukgovt.minister_govuk_people_page_content_20240503]
+into [analysis].[ukgovt.minister_govuk_people_page_content_20260428]
+from [source].[ukgovt.minister_govuk_people_page_content_20260428]
 where
     -- Exclude duplicates introduced where a Welsh (cy) translation is available
     [links.available_translations.locale] = 'en' and
@@ -87,7 +85,7 @@ go
 --- EDIT DATA
 -- Drop appointments with a duration of one day or less
 delete g
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428] g
 where
     datediff(day, g.appointment_start_date, g.appointment_end_date) <= 1
 
@@ -143,7 +141,7 @@ set
             -- Base case
             else g.post_name
         end
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428] g
 
 
 -- Clean organisation_name
@@ -192,7 +190,7 @@ set
             -- Base case
             else g.organisation_name
         end
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428] g
 
 
 -- Clean organisation_short_name
@@ -254,4 +252,4 @@ set
             -- Base case
             else g.organisation_short_name
         end
-from [analysis].[ukgovt.minister_govuk_people_page_content_20240503] g
+from [analysis].[ukgovt.minister_govuk_people_page_content_20260428] g
