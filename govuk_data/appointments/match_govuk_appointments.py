@@ -20,7 +20,7 @@
     Notes
         None
     Future enhancements
-        - Previously this was done by matching appointment characteristics records to the GOV.UK.
+        - To date this is done by matching appointment characteristics records to the GOV.UK.
         This has the downsides of meaning there are more records to check matches for and when
         we auto-generate code to update appointments we can get snippets attempting to update
         each of several spells in an appointment (or records would need collapsing). It will make
@@ -39,7 +39,9 @@ from sqlalchemy.dialects.mssql import BIT, DATE, FLOAT, NVARCHAR, UNIQUEIDENTIFI
 
 # %%
 # SET CONSTANTS
+# NB: Note difference in formats
 DATESTAMP = "20260428"
+MIN_START_DATE = "2024-07-04"
 
 # %%
 # CONNECT TO D/B
@@ -57,7 +59,7 @@ connection = dbo.connect_sql_db(
 # %%
 # READ IN DATA FOR MATCHING
 df_ifg_appt = pd.read_sql_query(
-    """
+    f"""
     select
         a.id appointment_id,
         p.id person_id,
@@ -91,7 +93,7 @@ df_ifg_appt = pd.read_sql_query(
         inner join core.organisation o on
             t.organisation_id = o.id
     where
-        ac.start_date >= '2010-05-11'
+        ac.start_date >= '{MIN_START_DATE}'
     """,
     con=connection,
 )
