@@ -136,3 +136,5 @@ df_person_page_flat.to_sql(
     index=False,
     if_exists="replace",
 )
+
+# %%
