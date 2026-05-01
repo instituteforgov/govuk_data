@@ -101,7 +101,7 @@ assert df_person_page.shape[0] == df_ifg_minister.shape[0], \
 
 # %%
 # SAVE TO PICKLE
-df_person_page.to_pickle(f"data/df_person_page.pkl_{DATESTAMP}")
+df_person_page.to_pickle(f"govuk_data/appointments/data/df_person_page.pkl_{DATESTAMP}")
 
 # %%
 # EDIT DATA
