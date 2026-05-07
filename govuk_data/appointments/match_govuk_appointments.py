@@ -105,7 +105,6 @@ df_govuk_appt = pd.read_sql_query(
         g.is_on_leave,
         g.is_acting,
         g.leave_reason,
-        g.organisation_name_clean organisation_name,
         g.organisation_short_name_clean organisation_short_name,
         g.appointment_start_date start_date,
         g.appointment_end_date end_date
@@ -243,7 +242,6 @@ df_merge.to_sql(
         "mp_peer": NVARCHAR(10),
         "post_name_ifg": NVARCHAR(256),
         "post_rank_ifg": NVARCHAR(256),
-        "organisation_name_ifg": NVARCHAR(256),
         "organisation_short_name_ifg": NVARCHAR(256),
         "cabinet_status": NVARCHAR(256),
         "is_on_leave_ifg": BIT,
@@ -255,7 +253,6 @@ df_merge.to_sql(
         "person_name_govuk": NVARCHAR(256),
         "post_name_govuk": NVARCHAR(256),
         "post_rank_govuk": NVARCHAR(256),
-        "organisation_name_govuk": NVARCHAR(256),
         "organisation_short_name_govuk": NVARCHAR(256),
         "is_on_leave_govuk": BIT,
         "is_acting_govuk": BIT,
