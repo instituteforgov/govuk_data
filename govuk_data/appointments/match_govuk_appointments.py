@@ -62,7 +62,7 @@ df_ifg_appt = pd.read_sql_query(
         end mp_peer,
         t.name post_name,
         o.short_name organisation_short_name,
-        t.rank_equivalence rank,
+        t.rank_equivalence post_rank,
         ac.cabinet_status cabinet_status,
         ac.is_on_leave is_on_leave,
         ac.is_acting is_acting,
