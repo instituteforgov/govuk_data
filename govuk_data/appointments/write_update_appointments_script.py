@@ -39,15 +39,15 @@ connection = dbo.connect_sql_db(
 # %%
 # READ IN SQL SCRIPTS
 # Identify appointments to edit
-with open("utils/identify_appointments_to_edit.sql", "r") as file:
+with open("govuk_data/appointments/utils/identify_appointments_to_edit.sql", "r") as file:
     identify_appointments_to_edit = file.read()
 
 # Update appointment count
-with open("utils/update_appointment_count.sql", "r") as file:
+with open("govuk_data/appointments/utils/update_appointment_count.sql", "r") as file:
     update_appointment_count = file.read()
 
 # Update appointment
-with open("utils/update_appointment.sql", "r") as file:
+with open("govuk_data/appointments/utils/update_appointment.sql", "r") as file:
     update_appointment = file.read()
 
 # %%

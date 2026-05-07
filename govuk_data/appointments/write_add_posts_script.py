@@ -37,15 +37,15 @@ connection = dbo.connect_sql_db(
 # %%
 # READ IN SQL SCRIPTS
 # Identify posts to add
-with open("utils/identify_posts_to_add.sql", "r") as file:
+with open("govuk_data/appointments/utils/identify_posts_to_add.sql", "r") as file:
     identify_posts_to_add = file.read()
 
 # Create post count
-with open("utils/create_post_count.sql", "r") as file:
+with open("govuk_data/appointments/utils/create_post_count.sql", "r") as file:
     create_post_count = file.read()
 
 # Create post
-with open("utils/create_post.sql", "r") as file:
+with open("govuk_data/appointments/utils/create_post.sql", "r") as file:
     create_post = file.read()
 
 # %%
