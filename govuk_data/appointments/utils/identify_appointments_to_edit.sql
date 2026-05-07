@@ -1,13 +1,11 @@
 -- Identify appointments for which we want to change the post
 -- NB: distinct is used to weed out duplicates that sometimes exist in the GOV.UK data
--- NB: This excludes appointments in the d/b matched to more than a single appointment in the
--- GOV.UK data - we handle these cases manually
+-- NB: This excludes appointments in the d/b matched to more than a single appointment in the GOV.UK data - we handle these cases manually
 select distinct
     w1.appointment_id_ifg appointment_id,
     w1.person_name_ifg person_name,
     w1.post_name_ifg post_name_old,
     w1.post_name_govuk post_name_new,
-    w1.organisation_name_ifg organisation_name,
     w1.organisation_short_name_ifg organisation_short_name,
     w1.post_rank_ifg post_rank_old,
     case
@@ -16,7 +14,7 @@ select distinct
     end post_rank_new,
     w1.start_date_ifg start_date,
     w1.end_date_ifg end_date
-from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w1
+from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w1
 where
     w1.reviewed = 1 and
     w1.match_accepted = 1 and
@@ -25,7 +23,7 @@ where
         select
             w2.appointment_id_ifg,
             count(distinct w2.post_name_govuk)
-        from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w2
+        from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w2
         where
             w1.appointment_id_ifg = w2.appointment_id_ifg and
             w2.match_accepted = 1 and
@@ -46,7 +44,7 @@ order by
     w1.start_date_ifg,
     w1.end_date_ifg,
     w1.post_name_govuk,
-    w1.organisation_name_ifg,
+    w1.organisation_short_name_ifg,
     case
         when w1.post_rank_govuk is null then w1.post_rank_ifg
         else w1.post_rank_govuk

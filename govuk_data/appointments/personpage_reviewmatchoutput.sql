@@ -31,12 +31,12 @@ select
     w1.end_date_match,
     w1.date_match,
     w1.match_score
-from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w1
+from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w1
 where
     w1.reviewed = 1 and
     not exists (
         select *
-        from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w2
+        from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w2
         where
             w2.match_accepted = 1 and
             w1.appointment_id_ifg = w2.appointment_id_ifg
@@ -80,7 +80,7 @@ select
     -- w1.end_date_match,
     -- w1.date_match,
     w1.match_score
-from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w1
+from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w1
 where
     w1.reviewed = 1 and
     w1.notes is not null
@@ -125,7 +125,7 @@ select
     -- w1.end_date_match,
     -- w1.date_match,
     w1.match_score
-from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w1
+from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w1
 where
     w1.reviewed = 1 and
     w1.match_accepted = 1 and
@@ -133,7 +133,7 @@ where
         select
             w2.appointment_id_ifg,
             count(distinct w2.post_name_govuk)
-        from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w2
+        from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w2
         where
             w1.appointment_id_ifg = w2.appointment_id_ifg and
             w2.match_accepted = 1 and
@@ -191,7 +191,7 @@ select distinct
     -- w1.end_date_match,
     -- w1.date_match,
     w1.match_score
-from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w1
+from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w1
 where
     w1.reviewed = 1 and
     w1.match_accepted = 1 and
@@ -200,7 +200,7 @@ where
         select
             w2.appointment_id_ifg,
             count(distinct w2.post_name_govuk)
-        from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w2
+        from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w2
         where
             w1.appointment_id_ifg = w2.appointment_id_ifg and
             w2.match_accepted = 1 and
@@ -227,7 +227,7 @@ select distinct
     w1.organisation_short_name_govuk,
     w1.post_rank_ifg,
     w1.post_rank_govuk
-from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w1
+from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w1
 where
     w1.reviewed = 1 and
     w1.match_accepted = 1 and
@@ -236,7 +236,7 @@ where
         select
             w2.appointment_id_ifg,
             count(distinct w2.post_name_govuk)
-        from workflow.[50556707-3276-404a-8a3f-cee24d329bae] w2
+        from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w2
         where
             w1.appointment_id_ifg = w2.appointment_id_ifg and
             w2.match_accepted = 1 and
