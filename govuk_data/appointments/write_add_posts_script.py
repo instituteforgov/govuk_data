@@ -8,8 +8,7 @@
         - script: utils/create_post_count.sql
         - script: utils/create_post.sql
     Outputs
-        - stdout: SQL insert script for new core.post records (copy and run manually
-          in the ministers database)
+        - stdout: SQL insert script for new core.post records (copy and run manually in the ministers database repo)
     Parameters
         None
     Notes
@@ -71,21 +70,21 @@ for index, row in df_posts_to_add.iterrows():
     add_posts_count_snippet = create_post_count.format(
         post_name=row["post_name"],
         post_rank=row["post_rank"],
-        organisation_name=row["organisation_name"],
         organisation_short_name=row["organisation_short_name"],
         organisation_start_date=row["organisation_start_date"],
         organisation_end_date=row["organisation_end_date"],
     )
     add_posts_count_snippet = add_posts_count_snippet.replace(
         "= 'None'", "is null"
+    ).replace(
+        "= 'nan'", "is null"
     )
 
     assert pd.read_sql_query(
         sql=add_posts_count_snippet,
         con=connection,
     ).iloc[0, 0] == 1, (
-        f"Expected 1 record to be affected, but {add_posts_count_snippet} "
-        f"affected {
+        f"Expected 1 record to be affected, but {add_posts_count_snippet} affected {
             pd.read_sql_query(sql=add_posts_count_snippet, con=connection).iloc[0, 0]
         } records"
     )
@@ -94,13 +93,14 @@ for index, row in df_posts_to_add.iterrows():
     add_posts_snippet = create_post.format(
         post_name=row["post_name"],
         post_rank=row["post_rank"],
-        organisation_name=row["organisation_name"],
         organisation_short_name=row["organisation_short_name"],
         organisation_start_date=row["organisation_start_date"],
         organisation_end_date=row["organisation_end_date"],
     )
     add_posts_snippet = add_posts_snippet.replace(
         "= 'None'", "is null"
+    ).replace(
+        "= 'nan'", "is null"
     )
 
     add_posts_code += add_posts_snippet + "\n"
