@@ -122,16 +122,19 @@ df_govuk_appt["start_date"] = pd.to_datetime(df_govuk_appt["start_date"], errors
 df_govuk_appt["end_date"] = pd.to_datetime(df_govuk_appt["end_date"], errors="coerce")
 
 # %%
-# Set end dates of ongoing appointments to today's date
+# Set end dates of ongoing appointments to today's date for scoring purposes
+# NB: nulls are restored before saving to d/b
+FILL_DATE = pd.Timestamp.now().normalize()
+
 df_govuk_appt.loc[
     df_govuk_appt["end_date"].isnull(),
     "end_date"
-] = pd.Timestamp.now().normalize()
+] = FILL_DATE
 
 df_ifg_appt.loc[
     df_ifg_appt["end_date"].isnull(),
     "end_date"
-] = pd.Timestamp.now().normalize()
+] = FILL_DATE
 
 # %%
 # JOIN DATASETS
@@ -224,6 +227,11 @@ df_merge.loc[
     ),
     "reviewed"
 ] = True
+
+# %%
+# Restore null end dates (were temporarily filled for scoring purposes)
+df_merge.loc[df_merge["end_date_ifg"] == FILL_DATE, "end_date_ifg"] = pd.NaT
+df_merge.loc[df_merge["end_date_govuk"] == FILL_DATE, "end_date_govuk"] = pd.NaT
 
 # %%
 # SAVE TO DB
