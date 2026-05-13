@@ -16,7 +16,8 @@
     Parameters
         None
     Notes
-        None
+        - The UUID of the workflow table this script creates, which serves as the input table for manual review of possible matches, is printed by this script
+        - The UUID of the workflow table to which the results of manual review of possible matches are written needs creating by hand
     Future enhancements
         - To date this is done by matching appointment characteristics records to the GOV.UK. This has the downsides of meaning there are more records to check matches for and when we auto-generate code to update appointments we can get snippets attempting to update each of several spells in an appointment (or records would need collapsing). It will make sense to switch the matching to be done on appointment records. The only downside with this is that GOV.UK records time on leave as a separate appointment – these will not be visible in our data
 """
@@ -33,7 +34,7 @@ from sqlalchemy.dialects.mssql import BIT, DATE, FLOAT, NVARCHAR, UNIQUEIDENTIFI
 # %%
 # SET CONSTANTS
 # NB: Note difference in formats
-DATESTAMP = "20260428"
+DATESTAMP = "20260513"
 MIN_START_DATE = "2024-07-04"
 
 # %%

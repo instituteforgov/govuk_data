@@ -11,7 +11,7 @@ select distinct
     end post_rank,
     o.start_date organisation_start_date,
     o.end_date organisation_end_date
-from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w1
+from workflow.[5a5df950-6520-4553-b93e-8fa8ce754599] w1
     left join core.organisation o on
         w1.organisation_short_name_ifg = o.short_name and
         w1.start_date_ifg >= isnull(o.start_date, '1900-01-01') and
@@ -24,7 +24,7 @@ where
         select
             w2.appointment_id_ifg,
             count(distinct w2.post_name_govuk)
-        from workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4] w2
+        from workflow.[5a5df950-6520-4553-b93e-8fa8ce754599] w2
         where
             w1.appointment_id_ifg = w2.appointment_id_ifg and
             w2.match_accepted = 1 and

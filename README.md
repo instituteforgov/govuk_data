@@ -87,12 +87,13 @@ Run once per data pull to match GOV.UK appointment records to the IfG Ministers 
 | 9 | `write_update_appointments_script.py` | `workflow.<uuid>` (via `utils/identify_appointments_to_edit.sql`) | stdout: SQL to update `core.appointment` post IDs — **copy and run manually in the IfG Ministers Database** |
 
 ## Run history
-| Run date | Scope | Appointment details workflow table - input | Appointment details workflow table - output |
-| --- | --- | --- | --- |
-| `2021-10-09` | People strings only |  |  |
-| `2022-07-02` | People strings only |  |  |
-| `2024-05-03` | People strings and appointment details | `workflow.[150d6d94-c423-446a-9594-bf8810899a6e]` | `workflow.[c0fbaa62-7e6b-4652-9ee8-bef5bd1baa3a]` |
-| `2026-04-28` | People strings and appointment details | `workflow.[9e918c56-ece0-4f78-8571-d141addbdc9d]` | `workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4]` |
+| Run date | Scope | Appointment details workflow table - input | Appointment details workflow table - output | Notes |
+| --- | --- | --- | --- | --- |
+| `2021-10-09` | People strings only |  |  |  |
+| `2022-07-02` | People strings only |  |  |  |
+| `2024-05-03` | People strings and appointment details | `workflow.[150d6d94-c423-446a-9594-bf8810899a6e]` | `workflow.[c0fbaa62-7e6b-4652-9ee8-bef5bd1baa3a]` |  |
+| `2026-04-28` | People strings and appointment details | `workflow.[9e918c56-ece0-4f78-8571-d141addbdc9d]` | `workflow.[4c930166-fa81-49ca-bb9c-b9d0a4890ab4]` | Unintentionally excluded ongoing appointments |
+| `2026-05-13` | People strings and appointment details | `workflow.[6f4b5295-0d68-4f11-b0cf-624bacd30c28]` | `workflow.[5a5df950-6520-4553-b93e-8fa8ce754599]` |  |
 
 ## Environment variables
 

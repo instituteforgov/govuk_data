@@ -1,8 +1,7 @@
 # %%
 """
     Purpose
-        Scrape GOV.UK people strings (e.g. matthew-hancock) from GOV.UK and save
-        them to SQL
+        Scrape GOV.UK people strings (e.g. matthew-hancock) from GOV.UK and save them to SQL
     Inputs
         - Web: https://www.gov.uk/government/people (paginated)
     Outputs
@@ -26,7 +25,7 @@ import urllib
 
 # %%
 # SET CONSTANTS
-DATESTAMP = "20260428"
+DATESTAMP = "20260513"
 
 # %%
 # CONNECT TO D/B

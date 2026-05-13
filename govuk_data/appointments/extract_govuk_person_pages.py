@@ -17,9 +17,8 @@
     Notes
         None
     Future enhancements
-        - Add handling for rate limiting https://content-api.publishing.service.gov.uk/#rate-limiting       # noqa: E501
-            - NB: Hasn't been a problem so far, extracting ~400 pages without adding a delay between
-            requests
+        - Add handling for rate limiting https://content-api.publishing.service.gov.uk/#rate-limiting
+            - NB: Hasn't been a problem so far, extracting ~400 pages without adding a delay between requests
         - Save page json to Azure Blob Storage
 """
 
@@ -36,7 +35,7 @@ from urllib3.util.retry import Retry
 
 # %%
 # SET CONSTANTS
-DATESTAMP = "20260428"
+DATESTAMP = "20260513"
 BASE_URL = "https://www.gov.uk/api/content/government/people/"
 HEADERS = {"Accept": "application/json"}
 CONNECTION_RETRIES = 5

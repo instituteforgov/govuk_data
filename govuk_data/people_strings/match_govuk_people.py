@@ -13,6 +13,7 @@
         None
     Notes
         - Run before manual review of the exported Excel file; see write_govuk_people_matches.py for the post-review step
+        - People who appear in core.person twice (which is generally if not exclusively because of name changes) they will appear in the table of possible matches twice. Only one match should be accepted.
 """
 
 import os
@@ -25,7 +26,7 @@ import pandas.io.formats.excel
 
 # %%
 # SET CONSTANTS
-DATESTAMP = "20260428"
+DATESTAMP = "20260513"
 
 # %%
 # CONNECT TO D/B
