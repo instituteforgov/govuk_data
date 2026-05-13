@@ -22,6 +22,7 @@
 """
 
 import os
+import re
 import uuid
 
 from ds_utils import database_operations as dbo
@@ -156,10 +157,16 @@ df_merge.loc[
 ] = 1
 
 # %%
-# Fuzzy match on post_name
+# Fuzzy match on post_name, taking the best score with and without ' the '
 df_merge["post_name_match"] = 0
 df_merge["post_name_match"] = df_merge.apply(
-    lambda x: fuzz.ratio(x["post_name_ifg"], x["post_name_govuk"]) / 100,
+    lambda x: max(
+        fuzz.ratio(x["post_name_ifg"], x["post_name_govuk"]),
+        fuzz.ratio(
+            re.sub(r" the ", " ", x["post_name_ifg"], flags=re.IGNORECASE),
+            re.sub(r" the ", " ", x["post_name_govuk"], flags=re.IGNORECASE)
+        )
+    ) / 100,
     axis=1
 )
 
