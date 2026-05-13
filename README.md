@@ -72,7 +72,7 @@ Run once per data pull to build up the `reference.[ukgovt.govuk_strings_people]`
 
 ## Appointments pipeline
 
-Run once per data pull to match GOV.UK appointment records to the IfG Ministers Database and generate SQL scripts to update it.
+Run once per data pull to match GOV.UK appointment records to the IfG Ministers Database and generate SQL scripts to update it. Note, the scripts only update the post name an appointment is associated with - other updates that are required (e.g. to start/end dates) must be made manually in the database. 
 
 | Step | Script | Inputs | Outputs |
 | --- | --- | --- | --- |
