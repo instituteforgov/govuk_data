@@ -109,6 +109,7 @@ set
 
             -- Formatting of whip roles
             when g.post_name = 'Assistant Government Whip' then 'Assistant Whip (HM Treasury)'
+            when g.post_name = 'Assistant Whip, House of Commons' then 'Assistant Whip (HM Treasury)'
             when g.post_name = 'Baroness in Waiting (Government Whip)' then 'Baroness in Waiting'
             when g.post_name = 'Minister (Baroness in Waiting)' then 'Baroness in Waiting'
             when g.post_name = 'Spokesman and Whip in the House of Lords, Baroness in Waiting' then 'Baroness in Waiting'
@@ -130,11 +131,14 @@ set
             when g.post_name = 'Parliamentary Secretary (Minister for Equalities)' then 'Minister for Equalities'
 
             -- Fix miscellaneous cases
+            when g.post_name = 'Economic Secretary to the Treasury' then 'Economic Secretary'
             when g.post_name = 'Commercial Secretary to the Treasury - Minister of State' then 'Commercial Secretary to the Treasury'
+            when g.post_name = 'Lord Chancellor and Secretary of State for Justice' then 'Secretary of State for Justice and Lord Chancellor'
             when g.post_name = 'HM Advocate General for Scotland' then 'Advocate General for Scotland'
-            when g.post_name = 'Parliamentary Under Secretary of State (Minister for Lords)' then 'Parliamentary Under Secretary of State'
+            when g.post_name = 'Parliamentary Under Secretary of State (Minister for Lords)' then 'Parliamentary Under-Secretary of State'
+            when g.post_name = 'Parliamentary Under Secretary of State' then 'Parliamentary Under-Secretary of State'
             when g.post_name = 'Parliamentary Secretary of State (Deputy Leader of the House of Commons)' then 'Deputy Leader of the House of Commons'
-            when g.person_name in ('Alun Cairns MP', 'Stephen Crabb MP', 'Guto Bebb', 'David Jones MP') and g.post_name = 'UK Government Minister for Wales' then 'Parliamentary Under Secretary of State'
+            when g.person_name in ('Alun Cairns MP', 'Stephen Crabb MP', 'Guto Bebb', 'David Jones MP') and g.post_name = 'UK Government Minister for Wales' then 'Parliamentary Under-Secretary of State'
             when g.post_name = 'Secretary of State for Business, Innovation and Skills and President of the Board of Trade' then 'Secretary of State for Business, Innovation and Skills'
             when g.post_name = 'Secretary of State for Communities and Local Government' then 'Secretary of State for Communities and Local Government'
 
