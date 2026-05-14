@@ -226,12 +226,12 @@ def standardise_mos_puss_post_name(
 
     # Handle cases where the post name is not a MoS or PUSS post name
     if not (
-        "Minister of State" in post_name or "Parliamentary Under Secretary of State" in post_name
+        "Minister of State" in post_name or "Parliamentary Under-Secretary of State" in post_name
     ):
         return post_name, None
 
     # Set post rank
-    if "Parliamentary Under Secretary of State" in post_name:
+    if "Parliamentary Under-Secretary of State" in post_name:
         post_rank = "PUSS"
     elif "Minister of State" in post_name:
         post_rank = "MoS"
@@ -250,17 +250,17 @@ def standardise_mos_puss_post_name(
             "Minister of State for Cabinet Office (", "Minister for "
         ).replace(")", "")
 
-    # Handle 'Parliamentary Under Secretary of State and' cases
-    if "Parliamentary Under Secretary of State and " in post_name:
+    # Handle 'Parliamentary Under-Secretary of State and' cases
+    if "Parliamentary Under-Secretary of State and " in post_name:
         post_name = post_name.split("and ", maxsplit=1)[1]
 
-    # Handle 'Parliamentary Under Secretary of State, ' cases
-    if "Parliamentary Under Secretary of State, " in post_name:
+    # Handle 'Parliamentary Under-Secretary of State, ' cases
+    if "Parliamentary Under-Secretary of State, " in post_name:
         post_name = post_name.split(", ", maxsplit=1)[1]
 
     # Handle cases with brackets
-    # NB: Needs to be done after handling 'Parliamentary Under Secretary of State and' cases
-    # to handle 'Parliamentary Under Secretary of State and Minister for Defence Equipment,
+    # NB: Needs to be done after handling 'Parliamentary Under-Secretary of State and' cases
+    # to handle 'Parliamentary Under-Secretary of State and Minister for Defence Equipment,
     # Support and Technology (including Defence Exports)' correctly
     if "(" in post_name:
         if "(Minister" in post_name:
