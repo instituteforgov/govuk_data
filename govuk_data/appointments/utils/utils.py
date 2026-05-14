@@ -154,12 +154,16 @@ def remove_lords_minister_post_names(
     """
     if " (Minister for the Lords)" in post_name:
         post_name = post_name.replace(" (Minister for the Lords)", "")
+    elif " (Lords Minister for" in post_name:
+        post_name = post_name.replace(" (Lords Minister for", " (Minister for")
     elif " (Lords Minister)" in post_name:
         post_name = post_name.replace(" (Lords Minister)", "")
     elif " and DCMS Lords Minister" in post_name:
         post_name = post_name.replace(" and DCMS Lords Minister", "")
     elif ", and Lords Minister" in post_name:
         post_name = post_name.replace(", and Lords Minister", "")
+    elif " and Lords Minister" in post_name:
+        post_name = post_name.replace(" and Lords Minister", "")
 
     return post_name
 
@@ -209,7 +213,7 @@ def standardise_mos_puss_post_name(
             - Parliamentary Under Secretary of State (Minister for AI and Intellectual Property) -> Minister for AI and Intellectual Property
 
             - Minister of State at the Northern Ireland Office -> Minister of State
-            - Minister of State for Asia and the Pacific at the Foreign & Commonwealth Office -> Minister of State for Asia and the Pacific
+            - Minister of State for Asia and the Pacific at the Foreign & Commonwealth Office -> Minister for Asia and the Pacific
 
             - Minister of State for Cabinet Office -> Minister of State for Cabinet Office
             - Minister of State for Cabinet Office (Cities and Constitution) -> Minister for Cities and Constitution
@@ -246,13 +250,23 @@ def standardise_mos_puss_post_name(
     if "Minister of State for Cabinet Office" == post_name:
         post_name = "Minister of State"
     elif "Minister of State for Cabinet Office (" in post_name:
-        post_name = post_name.replace(
-            "Minister of State for Cabinet Office (", "Minister for "
-        ).replace(")", "")
+        post_name = post_name.replace("Minister of State for Cabinet Office (", "Minister for ").replace(")", "")
+    elif "Minister for the Cabinet Office (Minister for" in post_name:
+        post_name = post_name.replace("Minister for the Cabinet Office (Minister for", "Minister for ").replace(")", "")
+    elif "Minister for the Cabinet Office (" in post_name:
+        post_name = post_name.replace("Minister for the Cabinet Office (", "Minister for ").replace(")", "")
+
+    # Handle 'Minister of State for' cases (non-Cabinet Office)
+    if "Minister of State for " in post_name:
+        post_name = "Minister for " + post_name.split("Minister of State for ", maxsplit=1)[1]
 
     # Handle 'Parliamentary Under-Secretary of State and' cases
     if "Parliamentary Under-Secretary of State and " in post_name:
         post_name = post_name.split("and ", maxsplit=1)[1]
+
+    # Handle 'Parliamentary Under-Secretary of State for' cases
+    if "Parliamentary Under-Secretary of State for " in post_name:
+        post_name = post_name.split("for ", maxsplit=1)[1]
 
     # Handle 'Parliamentary Under-Secretary of State, ' cases
     if "Parliamentary Under-Secretary of State, " in post_name:
