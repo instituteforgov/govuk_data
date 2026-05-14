@@ -132,7 +132,10 @@ set
 
             -- Fix miscellaneous cases
             when g.post_name = 'Economic Secretary to the Treasury' then 'Economic Secretary'
-            when g.post_name = 'Commercial Secretary to the Treasury - Minister of State' then 'Commercial Secretary to the Treasury'
+            when g.post_name = 'Exchequer Secretary to the Treasury' then 'Exchequer Secretary'
+            when g.post_name = 'Financial Secretary to the Treasury' then 'Financial Secretary'
+            when g.post_name = 'Commercial Secretary to the Treasury' then 'Commercial Secretary'
+            when g.post_name = 'Commercial Secretary to the Treasury - Minister of State' then 'Commercial Secretary'
             when g.post_name = 'Lord Chancellor and Secretary of State for Justice' then 'Secretary of State for Justice and Lord Chancellor'
             when g.post_name = 'HM Advocate General for Scotland' then 'Advocate General for Scotland'
             when g.post_name = 'Parliamentary Under Secretary of State (Minister for Lords)' then 'Parliamentary Under-Secretary of State'
