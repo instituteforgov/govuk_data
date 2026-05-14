@@ -16,7 +16,7 @@ def handle_equalities_minister_post_name(
 
     Notes
         - Formats handled:
-            - Minister for Sport, Tourism and Civil Society, and Minister for Equalities -> Minister for Sport, Tourism and Civil Society       # noqa: E501
+            - Minister for Sport, Tourism and Civil Society, and Minister for Equalities -> Minister for Sport, Tourism and Civil Society
     """
     if ", and Minister for Equalities" in post_name:
         post_name = post_name.replace(", and Minister for Equalities", "")
@@ -125,7 +125,7 @@ def remove_joint_post_name(
     """
     # Handle joint post names
     if " – joint with " in post_name:
-        post_name = re.sub(r"\s\S\sjoint with\s\w*(\sand\s\w*)*", "", post_name)        # noqa: E501, F821 (needed to fend of a flake8 misfire)
+        post_name = re.sub(r"\s\S\sjoint with\s\w*(\sand\s\w*)*", "", post_name)
 
     return post_name
 
@@ -200,28 +200,28 @@ def standardise_mos_puss_post_name(
     Notes
         - Formats handled:
             - Minister for Policing, Fire and Criminal Justice and Victims -> No change
-            - Parliamentary Under Secretary of State for Environment and Rural Affairs -> No change
+            - Parliamentary Under Secretary of State for Environment and Rural Affairs -> Parliamentary Under-Secretary of State for Environment and Rural Affairs
 
             - Minister of State (Crime and Policing) -> Minister for Crime and Policing
-            - Parliamentary Under Secretary of State (Americas, Caribbean and the Overseas Territories) -> Minister for Americas, Caribbean and the Overseas Territories        # noqa: E501
+            - Parliamentary Under Secretary of State (Americas, Caribbean and the Overseas Territories) -> Minister for Americas, Caribbean and the Overseas Territories
 
             - Minister of State (Minister for Africa) -> Minister for Africa
-            - Parliamentary Under Secretary of State (Minister for AI and Intellectual Property) -> Minister for AI and Intellectual Property       # noqa: E501
+            - Parliamentary Under Secretary of State (Minister for AI and Intellectual Property) -> Minister for AI and Intellectual Property
 
             - Minister of State at the Northern Ireland Office -> Minister of State
-            - Minister of State for Asia and the Pacific at the Foreign & Commonwealth Office
+            - Minister of State for Asia and the Pacific at the Foreign & Commonwealth Office -> Minister of State for Asia and the Pacific
 
             - Minister of State for Cabinet Office -> Minister of State for Cabinet Office
             - Minister of State for Cabinet Office (Cities and Constitution) -> Minister for Cities and Constitution
 
-            - Parliamentary Under Secretary of State and Minister for Defence Procurement -> Minister for Defence Procurement       # noqa: E501
+            - Parliamentary Under Secretary of State and Minister for Defence Procurement -> Minister for Defence Procurement
 
             - Parliamentary Under Secretary of State, Minister for Faith -> Minister for Faith
 
-            - Parliamentary Under Secretary of State and Minister for Defence Equipment, Support and Technology (including Defence Exports) -> Minister for Defence Equipment, Support and Technology (including Defence Exports)       # noqa: E501
+            - Parliamentary Under Secretary of State and Minister for Defence Equipment, Support and Technology (including Defence Exports) -> Minister for Defence Equipment, Support and Technology (including Defence Exports)
     """
-    # Handle hyphenated PUSS post names
-    if "Under-Secretary" in post_name:
+    # Handle unhyphenated PUSS post names
+    if "Under Secretary" in post_name:
         post_name = standardise_puss_punctuation(post_name)
 
     # Handle cases where the post name is not a MoS or PUSS post name
@@ -291,7 +291,7 @@ def standardise_puss_punctuation(
     Notes
         None
     """
-    # Handle hyphenated PUSS post names
-    post_name = post_name.replace("Under-Secretary", "Under Secretary")
+    # Handle unhyphenated PUSS post names
+    post_name = post_name.replace("Under Secretary", "Under-Secretary")
 
     return post_name
