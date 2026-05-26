@@ -15,7 +15,7 @@ from workflow.[5a5df950-6520-4553-b93e-8fa8ce754599] w1
     left join core.organisation o on
         w1.organisation_short_name_ifg = o.short_name and
         w1.start_date_ifg >= isnull(o.start_date, '1900-01-01') and
-        w1.end_date_ifg <= isnull(o.end_date, '9999-12-31')
+        isnull(w1.end_date_ifg, '9999-12-31') <= isnull(o.end_date, '9999-12-31')
 where
     w1.reviewed = 1 and
     w1.match_accepted = 1 and

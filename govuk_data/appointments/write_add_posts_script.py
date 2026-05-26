@@ -106,3 +106,5 @@ for index, row in df_posts_to_add.iterrows():
     add_posts_code += add_posts_snippet + "\n"
 
 print(add_posts_code)
+
+# %%
