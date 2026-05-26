@@ -13,8 +13,6 @@
                     - NB: Where a row is the second (or subsequent) record for a given individual, this should be left blank
     Outputs
         - SQL: analysis.[ukgovt.minister_ids_govuk_strings_<datestamp>]
-    Parameters
-        None
     Notes
         - Run after match_govuk_people.py and manual review of the exported Excel file
 """

@@ -13,8 +13,6 @@
         - SQL: core.organisation
     Outputs
         - SQL: workflow.<uuid>  (UUID printed to console; must be substituted manually into personpage_reviewmatchoutput.sql, write_add_posts_script.py and write_update_appointments_script.py)
-    Parameters
-        None
     Notes
         - The UUID of the workflow table this script creates, which serves as the input table for manual review of possible matches, is printed by this script
         - The UUID of the workflow table to which the results of manual review of possible matches are written needs creating by hand

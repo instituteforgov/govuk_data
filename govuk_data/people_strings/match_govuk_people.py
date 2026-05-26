@@ -9,8 +9,6 @@
         - SQL: source.[ukgovt.govuk_strings_people_<datestamp>]
     Outputs
         - Excel: govuk_data/people_strings/data/match_<datestamp>.xlsx
-    Parameters
-        None
     Notes
         - Run before manual review of the exported Excel file; see write_govuk_people_matches.py for the post-review step
         - People who appear in core.person twice (which is generally if not exclusively because of name changes) they will appear in the table of possible matches twice. Only one match should be accepted.

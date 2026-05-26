@@ -9,8 +9,6 @@
         - script: utils/create_post.sql
     Outputs
         - stdout: SQL insert script for new core.post records (copy and run manually in the ministers database repo)
-    Parameters
-        None
     Notes
         None
 """

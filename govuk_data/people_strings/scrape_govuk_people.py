@@ -6,8 +6,6 @@
         - Web: https://www.gov.uk/government/people (paginated)
     Outputs
         - SQL: source.[ukgovt.govuk_strings_people_<datestamp>]
-    Parameters
-        - base_url: Base URL for scraping
     Notes
         None
 """

@@ -9,8 +9,6 @@
         - script: utils/update_appointment.sql
     Outputs
         - stdout: SQL update script for core.appointment records (copy and run manually in the ministers database repo)
-    Parameters
-        None
     Notes
         None
 """

@@ -6,8 +6,6 @@
         - SQL: analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]
     Outputs
         - SQL: analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>] (overwrites the same table in place)
-    Parameters
-        None
     Notes
         - Cleaning applied: ampersand replacement, identification of ministers on leave or acting, removal of joint post names, handling of Parliamentary Secretary post names, standardisation of MoS/PUSS post names, removal of Lords minister post names
         - Run after personpage_createanalysistable.sql

@@ -9,11 +9,6 @@
     Outputs
         - pkl: data/df_person_page.pkl_<datestamp>
         - SQL: source.[ukgovt.minister_govuk_people_page_content_<datestamp>]
-    Parameters
-        - base_url: Base URL for API request
-        - headers: Headers for API request
-        - connection_retries: Number of connection retries
-        - backoff_factor: Backoff factor for connection retries
     Notes
         None
     Future enhancements
