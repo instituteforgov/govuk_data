@@ -266,16 +266,14 @@ def standardise_mos_puss_post_name(
 
     # Handle 'Parliamentary Under-Secretary of State for' cases
     if "Parliamentary Under-Secretary of State for " in post_name:
-        post_name = post_name.split("for ", maxsplit=1)[1]
+        post_name = "Minister for " + post_name.split("for ", maxsplit=1)[1]
 
     # Handle 'Parliamentary Under-Secretary of State, ' cases
     if "Parliamentary Under-Secretary of State, " in post_name:
-        post_name = post_name.split(", ", maxsplit=1)[1]
+        post_name = "Minister for " + post_name.split(", ", maxsplit=1)[1]
 
     # Handle cases with brackets
-    # NB: Needs to be done after handling 'Parliamentary Under-Secretary of State and' cases
-    # to handle 'Parliamentary Under-Secretary of State and Minister for Defence Equipment,
-    # Support and Technology (including Defence Exports)' correctly
+    # NB: Needs to be done after handling 'Parliamentary Under-Secretary of State and' cases to handle 'Parliamentary Under-Secretary of State and Minister for Defence Equipment, Support and Technology (including Defence Exports)' correctly
     if "(" in post_name:
         if "(Minister" in post_name:
             post_name = post_name.split("(", maxsplit=1)[1].split(")", maxsplit=1)[0]
