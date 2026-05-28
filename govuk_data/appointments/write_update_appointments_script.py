@@ -10,7 +10,7 @@
     Outputs
         - stdout: SQL update script for core.appointment records (copy and run manually in the ministers database repo)
     Notes
-        - The script generated in the previous step - write_add_posts_script.py - needs to be run before this script, so that all of the posts to which appointments are being updated exist
+        - The script generated in the write_add_posts_script.py step needs to be run before this script, so that all of the posts to which appointments are being updated exist
 """
 
 import datetime
