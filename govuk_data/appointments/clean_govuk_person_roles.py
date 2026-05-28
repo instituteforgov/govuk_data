@@ -66,12 +66,6 @@ df["post_name_clean"] = df["post_name_clean"].apply(utils.remove_joint_post_name
 df["post_name_clean"] = df["post_name_clean"].apply(utils.handle_equalities_minister_post_name)
 
 # %%
-# Handle Parliamentary Secretary post names
-df[["post_name_clean", "post_rank"]] = pd.DataFrame(
-    df["post_name_clean"].apply(utils.handle_parliamentary_secretary_post_name).to_list()
-)
-
-# %%
 # Remove details of Lords minister roles
 df["post_name_clean"] = df["post_name_clean"].apply(utils.remove_lords_minister_post_names)
 

@@ -24,38 +24,6 @@ def handle_equalities_minister_post_name(
     return post_name
 
 
-def handle_parliamentary_secretary_post_name(
-    post_name: str
-) -> tuple[str, str]:
-    """
-    Handle Parliamentary Secretary post names
-
-    Parameters
-        - post_name: The post name to be cleaned
-
-    Returns
-        - post_name: The cleaned post name
-        - post_rank: The rank of the post
-
-    Notes
-        - Formats handled:
-            - Parliamentary Secretary to the Treasury (Chief Whip) -> No change
-            - Parliamentary Secretary (Minister for Civil Society) -> Parliamentary Secretary for Civil Society     # noqa: E501
-    """
-    # Handle parliamentary secretary post names
-    if "Parliamentary Secretary (Minister for" in post_name:
-        post_name = post_name.replace(
-            "Parliamentary Secretary (Minister for ",
-            "Parliamentary Secretary for "
-        ).replace(")", "")
-        post_rank = "PUSS"
-
-        return post_name, post_rank
-
-    else:
-        return post_name, None
-
-
 def identify_ministers_on_leave_acting(
     post_name: str
 ) -> tuple[str, bool, bool, str]:
@@ -223,19 +191,36 @@ def standardise_mos_puss_post_name(
             - Parliamentary Under Secretary of State, Minister for Faith -> Minister for Faith
 
             - Parliamentary Under Secretary of State and Minister for Defence Equipment, Support and Technology (including Defence Exports) -> Minister for Defence Equipment, Support and Technology (including Defence Exports)
+
+            - Parliamentary Secretary to the Treasury (Chief Whip) -> Chief Whip
+            - Parliamentary Secretary (Minister for Civil Society) -> Minister for Civil Society
+            - Parliamentary Secretary for the Constitution -> Minister for the Constitution
     """
     # Handle unhyphenated PUSS post names
     if "Under Secretary" in post_name:
         post_name = standardise_puss_punctuation(post_name)
 
-    # Handle cases where the post name is not a MoS or PUSS post name
+    # Handle cases where the post name is not a MoS, PS or PUSS post name
     if not (
-        "Minister of State" in post_name or "Parliamentary Under-Secretary of State" in post_name
+        "Minister of State" in post_name or "Parliamentary Secretary" in post_name or "Parliamentary Under-Secretary of State" in post_name
     ):
         return post_name, None
 
+    # Handle Parliamentary Secretary post names
+    if "Parliamentary Secretary" in post_name:
+        if "Parliamentary Secretary to the Treasury (Chief Whip)" in post_name:
+            return "Chief Whip", "Parliamentary Secretary to the Treasury", "Parl. lead."
+        elif "Parliamentary Secretary (Minister for" in post_name:
+            post_name = post_name.split("(Minister for ", maxsplit=1)[1].rstrip(")")
+            return "Minister for " + post_name.strip(), "PUSS"
+        elif "Parliamentary Secretary for " in post_name:
+            post_name = post_name.split("Parliamentary Secretary for ", maxsplit=1)[1]
+            return "Minister for " + post_name.strip(), "PUSS"
+
     # Set post rank
     if "Parliamentary Under-Secretary of State" in post_name:
+        post_rank = "PUSS"
+    elif "Parliamentary Secretary" in post_name:
         post_rank = "PUSS"
     elif "Minister of State" in post_name:
         post_rank = "MoS"
