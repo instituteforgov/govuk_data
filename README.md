@@ -6,6 +6,9 @@ This project extracts data on individuals (identifiers and details of appointmen
 
 - 🔒 [IfG Ministers Database - private repo](https://github.com/instituteforgov/ifg-ministers-database-private/): Holds the majority of code and resources for the IfG Ministers Database project (held privately). GOV.UK appointment data collated here is matched to IfG Ministers Database appointments data and scripts created that update the data held in the IfG Ministers Database. A package - `ifg_ministers_database_utils` - stored in this repo is also a dependency used in one of the steps of the GOV.UK people data pipeline
 - 🔓 [IfG Ministers Database - public repo](https://github.com/instituteforgov/ifg-ministers-database-public/): The public part of the IfG Ministers Database project
+- 🔒 [Data App](https://github.com/instituteforgov/data-app): An early prototype of an IfG data app. Can be used for manual review of possible matches of appointment data between GOV.UK data and the IfG Ministers Database
+
+    NB: Not to be confused with the similarly named 🔓 [IfG Data App](https://github.com/instituteforgov/ifg_data_app), which serves the IfG's analytics dashboard
 
 ## Project structure
 
