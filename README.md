@@ -4,7 +4,7 @@ This project extracts data on individuals (identifiers and details of appointmen
 
 ## Related repositories
 
-- 🔒 [IfG Ministers Database - private repo](https://github.com/instituteforgov/ifg-ministers-database-private/): Holds the majority of code and resources for the IfG Ministers Database project (held privately). Appointment information collated in this repo is matched to IfG Ministers Database appointments data and scripts generated to update the data held in the database
+- 🔒 [IfG Ministers Database - private repo](https://github.com/instituteforgov/ifg-ministers-database-private/): Holds the majority of code and resources for the IfG Ministers Database project (held privately). GOV.UK appointment data collated here is matched to IfG Ministers Database appointments data and scripts created that update the data held in the IfG Ministers Database. A package - `ifg_ministers_database_utils` - stored in this repo is also a dependency used in one of the steps of the GOV.UK people data pipeline
 - 🔓 [IfG Ministers Database - public repo](https://github.com/instituteforgov/ifg-ministers-database-public/): The public part of the IfG Ministers Database project
 
 ## Project structure
@@ -19,14 +19,18 @@ This project extracts data on individuals (identifiers and details of appointmen
 |   |   ├── personpage_qa_analysis.sql
 |   |   ├── personpage_qa_source.sql
 |   |   ├── personpage_reviewmatchoutput.sql
+|   |   ├── write_add_post_relationships_script.py
 |   |   ├── write_add_posts_script.py
 |   |   ├── write_update_appointments_script.py
 |   |   ├── data/
 |   |   │   └── df_person_page.pkl_<datestamp>
 |   |   └── utils/
 |   |       ├── create_post_count.sql
+|   |       ├── create_post_relationship_count.sql
+|   |       ├── create_post_relationship.sql
 |   |       ├── create_post.sql
 |   |       ├── identify_appointments_to_edit.sql
+|   |       ├── identify_post_relationships_to_add.sql
 |   |       ├── identify_posts_to_add.sql
 |   |       ├── update_appointment_count.sql
 |   |       ├── update_appointment.sql
@@ -84,7 +88,8 @@ Run once per data pull to match GOV.UK appointment records to the IfG Ministers 
 | 6 | `match_govuk_appointments.py` | <ul><li>`analysis.[ukgovt.minister_govuk_people_page_content_<datestamp>]`</li><li>`core.person`</li><li>`core.appointment`</li><li>`core.appointment_characteristics`</li><li>`core.post`</li><li>`core.organisation`</li></ul> | `workflow.<uuid>` *(UUID printed to console — substitute into steps 7–9)* |
 | 7 | `personpage_reviewmatchoutput.sql` | `workflow.<uuid>` | *(manual review — no outputs; update `reviewed`/`match_accepted`/`replace_post_name` flags in the workflow table)* |
 | 8 | `write_add_posts_script.py` | `workflow.<uuid>` (via `utils/identify_posts_to_add.sql`) | stdout: SQL to insert new records into `core.post` — **copy and run manually in the IfG Ministers Database** |
-| 9 | `write_update_appointments_script.py` | `workflow.<uuid>` (via `utils/identify_appointments_to_edit.sql`) | stdout: SQL to update `core.appointment` post IDs — **copy and run manually in the IfG Ministers Database** |
+| 9 | `write_add_post_relationships_script.py` | `workflow.<uuid>` (via `utils/identify_post_relationships_to_add.sql`) | stdout: SQL to insert new records into `core.post_relationships` — **copy and run manually in the IfG Ministers Database** |
+| 10 | `write_update_appointments_script.py` | `workflow.<uuid>` (via `utils/identify_appointments_to_edit.sql`) | stdout: SQL to update `core.appointment` post IDs — **copy and run manually in the IfG Ministers Database** |
 
 ## Run history
 | Run date | Scope | Appointment details workflow table - input | Appointment details workflow table - output | Notes |
