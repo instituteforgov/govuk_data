@@ -4,11 +4,11 @@
 -- NB: This adds on organisation start and end dates so we can distinguish between organisations where the same name has been used more than once (e.g. Department for Culture, Media and Sport, Department for Education)
 select distinct
     w1.post_name_govuk post_name,
-    w1.organisation_short_name_ifg organisation_short_name,
     case
         when w1.post_rank_govuk is null then w1.post_rank_ifg
         else w1.post_rank_govuk
     end post_rank,
+    w1.organisation_short_name_ifg organisation_short_name,
     o.start_date organisation_start_date,
     o.end_date organisation_end_date
 from workflow.[5a5df950-6520-4553-b93e-8fa8ce754599] w1

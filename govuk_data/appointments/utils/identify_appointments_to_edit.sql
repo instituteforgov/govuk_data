@@ -6,12 +6,12 @@ select distinct
     w1.person_name_ifg person_name,
     w1.post_name_ifg post_name_old,
     w1.post_name_govuk post_name_new,
-    w1.organisation_short_name_ifg organisation_short_name,
     w1.post_rank_ifg post_rank_old,
     case
         when w1.post_rank_govuk is null then w1.post_rank_ifg
         else w1.post_rank_govuk
     end post_rank_new,
+    w1.organisation_short_name_ifg organisation_short_name,
     w1.start_date_ifg start_date,
     w1.end_date_ifg end_date
 from workflow.[5a5df950-6520-4553-b93e-8fa8ce754599] w1
