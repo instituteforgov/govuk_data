@@ -60,7 +60,7 @@ df_posts_to_add["post_name"] = df_posts_to_add[
 
 # %%
 # PRODUCE SCRIPT
-add_posts_code = "--- SET HOLD\nset noexec on\n\n"
+add_posts_code = "--- SET HOLD\nset noexec on\n\n-- Add posts\n"
 
 for index, row in df_posts_to_add.iterrows():
 

@@ -95,7 +95,7 @@ df_post_relationships_to_add["group_name"] = df_post_relationships_to_add[
 
 # %%
 # PRODUCE SCRIPT
-add_posts_code = "--- SET HOLD\nset noexec on\n\n"
+add_posts_code = "--- SET HOLD\nset noexec on\n\n-- Add post relationships\n"
 
 for index, row in df_post_relationships_to_add.iterrows():
 

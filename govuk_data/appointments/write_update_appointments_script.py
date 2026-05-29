@@ -77,7 +77,7 @@ df_appointments_to_edit.loc[
 
 # %%
 # PRODUCE SCRIPT
-update_appointments_code = "--- SET HOLD\nset noexec on\n\n"
+update_appointments_code = "--- SET HOLD\nset noexec on\n\n-- Update appointments\n"
 
 for index, row in df_appointments_to_edit.iterrows():
 
